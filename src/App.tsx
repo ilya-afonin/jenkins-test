@@ -11,12 +11,12 @@ const App = () => {
       <Header />
       <Router>
         <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route exact path="/operations" component={() => <Operations />} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/operations" component={Operations} />
           <Route
             exact
             path="*"
-            component={() => <div>Error, page not found!</div>}
+            render={() => <div>Error, page not found!</div>}
           />
         </Switch>
       </Router>
