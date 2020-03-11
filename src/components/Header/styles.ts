@@ -3,13 +3,13 @@ import { EMainColorThem } from "../../common/Enums/Enums";
 
 export const useStyles = makeStyles({
   root: {
-    backgroundColor: EMainColorThem.green
+    backgroundColor: (EMainColorThem.green)
   }
 });
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: EMainColorThem.black
+      main: EMainColorThem.lineColor
     }
   }
 });

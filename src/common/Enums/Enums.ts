@@ -1,4 +1,4 @@
 export enum EMainColorThem {
   green = "#046a38",
-  black = "#52A529"
+  lineColor = "#52A529"
 }
