@@ -8,8 +8,8 @@ import "./App.css";
 const App = () => {
   return (
     <div className="App">
-      <Header />
       <Router>
+        <Header />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/operations" component={Operations} />
