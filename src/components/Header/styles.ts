@@ -5,7 +5,7 @@ export const useStyles = makeStyles({
   root: {
     backgroundColor: EMainColorThem.green,
     display: "flex",
-    flexDirection: "inherit",
+    flexFlow: "row nowrap",
     justifyContent: "space-between"
   },
   box: {
