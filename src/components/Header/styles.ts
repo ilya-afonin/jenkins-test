@@ -3,7 +3,16 @@ import { EMainColorThem } from "../../common/Enums/Enums";
 
 export const useStyles = makeStyles({
   root: {
-    backgroundColor: (EMainColorThem.green)
+    backgroundColor: EMainColorThem.green,
+    display: "flex",
+    flexDirection: "inherit",
+    justifyContent: "space-between"
+  },
+  box: {
+    padding: "0 15px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
 });
 export const theme = createMuiTheme({
