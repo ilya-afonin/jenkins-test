@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import { IUserInfo } from "./common/Interfaces/Interfaces";
 import "./App.css";
 
-const App = () => {
+const App = (): JSX.Element => {
   const [value, setValue] = useState<IUserInfo | null>(null);
   useEffect(() => {
     const asyncFetch = async (): Promise<void> => {
@@ -17,7 +17,7 @@ const App = () => {
   }, []);
 
   // Берём данные юзера и отрисовываем в хэдере.
-  const fetchUserInfo = async (token: string) => {
+  const fetchUserInfo = async (token: string): Promise<void> => {
     const url = "httpbridge-server/invoke/cpsadminservice/userService/userInfo";
     let formData = new FormData();
     formData.append("csrfToken", token);
@@ -31,7 +31,7 @@ const App = () => {
   };
 
   // Отправляем логин и пароль и получаем куки.
-  const fetchDataPost = async () => {
+  const fetchDataPost = async (): Promise<void> => {
     let username = "test_user";
     let password = "test_user";
     let formData = new FormData();
@@ -45,7 +45,7 @@ const App = () => {
   };
 
   // Получаем токен и кладём в sessionStorage
-  const fetchDataGet = async () => {
+  const fetchDataGet = async (): Promise<void> => {
     const response = await fetch(
       "httpbridge-server/csrfToken/get?moduleId=cpsadminservice",
       {

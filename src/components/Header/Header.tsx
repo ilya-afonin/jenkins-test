@@ -26,7 +26,7 @@ interface IHeader extends RouteComponentProps {
  * @returns {JSX} Хедер и элементы навигации.
  * @prop {string} match Параметры роутинга.
  */
-const Header = (props: IHeader) => {
+const Header = (props: IHeader): JSX.Element => {
   const { userInfo } = props;
   const LinkTab: React.ComponentType<
     TabProps & LinkProps
@@ -78,12 +78,12 @@ const Header = (props: IHeader) => {
           onChange={setHandleChange}
           indicatorColor={"primary"}
         >
+          <LinkTab component={Link} to={ERoutingPath.main} label="Главная" />
           <LinkTab
             component={Link}
-            to={ERoutingPath.main}
-            label="Главная"
+            to={ERoutingPath.operations}
+            label="Операции"
           />
-          <LinkTab component={Link} to={ERoutingPath.operations} label="Операции" />
         </Tabs>
         <Box className={classes.box}>{renderUserInfo()}</Box>
       </AppBar>
