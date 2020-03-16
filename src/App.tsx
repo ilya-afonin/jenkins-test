@@ -68,6 +68,12 @@ const App = (): JSX.Element => {
           <Route exact path="/operations" component={Operations} />
           <Route
             exact
+            path="/directions"
+            render={() => <div>directions</div>}
+          />
+          <Route exact path="/admin" render={() => <div>admin</div>} />
+          <Route
+            exact
             path="*"
             render={() => <div>Error, page not found!</div>}
           />

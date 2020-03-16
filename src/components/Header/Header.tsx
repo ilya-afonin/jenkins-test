@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React from "react";
 import {
   Link,
   LinkProps,
@@ -13,10 +13,9 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { default as Tab, TabProps } from "@material-ui/core/Tab";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { IUserInfo } from "../../common/Interfaces/Interfaces";
 import { ERoutingPath } from "../../common/Enums/Enums";
-import { useStyles, theme } from "./styles";
+import { useStyles } from "./styles";
 
 interface IHeader extends RouteComponentProps {
   userInfo: IUserInfo | null;
@@ -25,33 +24,30 @@ interface IHeader extends RouteComponentProps {
  * Компонент Header, основная навигация сайта.
  * @returns {JSX} Хедер и элементы навигации.
  * @prop {string} match Параметры роутинга.
+ * @prop {object} value User info.
  */
 const Header = (props: IHeader): JSX.Element => {
+  const {
+    location: { pathname }
+  } = props;
   const { userInfo } = props;
   const LinkTab: React.ComponentType<
     TabProps & LinkProps
   > = Tab as React.ComponentType<TabProps & LinkProps>;
-  const [value, setValue] = useState(() => {
-    const {
-      location: { pathname }
-    } = props;
-    switch (pathname) {
+  const classes = useStyles();
+  const pathName = (path: string): number | void => {
+    switch (path) {
       case ERoutingPath.main:
         return 0;
       case ERoutingPath.operations:
         return 1;
+      case ERoutingPath.directions:
+        return 2;
+      case ERoutingPath.admin:
+        return 3;
       default:
         break;
     }
-  });
-  const classes = useStyles();
-  /**
-   * Изменяем индекс вкладки.
-   * @prop {Event} event кэлбэк при нажатии на вкладку.
-   * @prop {Number} newValue Номер вкладки.
-   */
-  const setHandleChange = (event: ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
   };
 
   const renderUserInfo = () => {
@@ -59,10 +55,7 @@ const Header = (props: IHeader): JSX.Element => {
       return (
         <>
           <Typography variant="subtitle2">{`Логин: ${
-            userInfo.login
-          }`}</Typography>
-          <Typography variant="subtitle2">{`Роль: ${
-            userInfo.rang
+            userInfo.user.login
           }`}</Typography>
         </>
       );
@@ -71,23 +64,30 @@ const Header = (props: IHeader): JSX.Element => {
     }
   };
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar className={classes.root}>
-        <Tabs
-          value={value}
-          onChange={setHandleChange}
-          indicatorColor={"primary"}
-        >
-          <LinkTab component={Link} to={ERoutingPath.main} label="Главная" />
-          <LinkTab
-            component={Link}
-            to={ERoutingPath.operations}
-            label="Операции"
-          />
-        </Tabs>
-        <Box className={classes.box}>{renderUserInfo()}</Box>
-      </AppBar>
-    </ThemeProvider>
+    <AppBar className={classes.root}>
+      <Tabs
+        value={pathName(pathname)}
+        classes={{ indicator: classes.colorActiveTab }}
+      >
+        <LinkTab component={Link} to={ERoutingPath.main} label="Главная" />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.operations}
+          label="Операции"
+        />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.directions}
+          label="Справочники"
+        />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.admin}
+          label="Администрирование"
+        />
+      </Tabs>
+      <Box className={classes.box}>{renderUserInfo()}</Box>
+    </AppBar>
   );
 };
 
