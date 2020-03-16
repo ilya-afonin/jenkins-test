@@ -13,10 +13,9 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { default as Tab, TabProps } from "@material-ui/core/Tab";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { IUserInfo } from "../../common/Interfaces/Interfaces";
 import { ERoutingPath } from "../../common/Enums/Enums";
-import { useStyles, theme } from "./styles";
+import { useStyles } from "./styles";
 
 interface IHeader extends RouteComponentProps {
   userInfo: IUserInfo | null;
@@ -65,29 +64,30 @@ const Header = (props: IHeader): JSX.Element => {
     }
   };
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar className={classes.root}>
-        <Tabs value={pathName(pathname)} indicatorColor={"primary"}>
-          <LinkTab component={Link} to={ERoutingPath.main} label="Главная" />
-          <LinkTab
-            component={Link}
-            to={ERoutingPath.operations}
-            label="Операции"
-          />
-          <LinkTab
-            component={Link}
-            to={ERoutingPath.directions}
-            label="Справочники"
-          />
-          <LinkTab
-            component={Link}
-            to={ERoutingPath.admin}
-            label="Администрирование"
-          />
-        </Tabs>
-        <Box className={classes.box}>{renderUserInfo()}</Box>
-      </AppBar>
-    </ThemeProvider>
+    <AppBar className={classes.root}>
+      <Tabs
+        value={pathName(pathname)}
+        classes={{ indicator: classes.colorActiveTab }}
+      >
+        <LinkTab component={Link} to={ERoutingPath.main} label="Главная" />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.operations}
+          label="Операции"
+        />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.directions}
+          label="Справочники"
+        />
+        <LinkTab
+          component={Link}
+          to={ERoutingPath.admin}
+          label="Администрирование"
+        />
+      </Tabs>
+      <Box className={classes.box}>{renderUserInfo()}</Box>
+    </AppBar>
   );
 };
 

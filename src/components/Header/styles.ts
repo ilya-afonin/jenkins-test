@@ -1,4 +1,4 @@
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { EMainColorThem } from "../../common/Enums/Enums";
 
 export const useStyles = makeStyles({
@@ -13,12 +13,8 @@ export const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center"
-  }
-});
-export const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: EMainColorThem.lineColor
-    }
+  },
+  colorActiveTab: {
+    backgroundColor: EMainColorThem.lineColor
   }
 });
