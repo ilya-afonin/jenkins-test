@@ -1,4 +1,4 @@
-export interface IUserInfo {
+export interface IUser {
   depCodeEasup: string;
   depNameEasup: string;
   departmentName: string;
@@ -12,4 +12,8 @@ export interface IUserInfo {
   rang: string;
   tabNum: string;
   uuid: string;
+}
+export interface IUserInfo {
+  roles: Array<object>;
+  user: IUser;
 }

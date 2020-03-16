@@ -5,5 +5,7 @@ export enum EMainColorThem {
 
 export enum ERoutingPath {
   main = "/",
-  operations = "/operations"
+  operations = "/operations",
+  directions = "/directions",
+  admin = "/admin"
 }
