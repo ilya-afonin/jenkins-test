@@ -1,74 +1,54 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { CardContent } from "@material-ui/core";
+import { Page } from "./styles";
 
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Container,
-  Typography
-} from "@material-ui/core";
-import { Lock } from "@material-ui/icons";
-import { useStyles } from "./styles";
-
-//TODO: Переписать на styled components
-
-export const Home = () => {
-  const classes = useStyles();
+export const Home = (): JSX.Element => {
   return (
-    <Container maxWidth="md" className={classes.content}>
-      <div className={classes.contentHeader}>
-        <Lock className={classes.contentHeaderLogo} />
-        <h1 className={classes.contentHeaderTitle}>CPS</h1>
-      </div>
-      <div className={classes.contentBody}>
-        <div className={classes.contentBodyDescription}>
+    <Page.Content>
+      <Page.Header>
+        <Page.Header__Logo />
+        <Page.Header__Title variant="h1">CPS</Page.Header__Title>
+      </Page.Header>
+
+      <Page.Body>
+        <Page.Body__Description>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam velit
           commodi mollitia in ad iure nulla minus impedit quis, laudantium natus
           odio vel culpa. Illo totam placeat ab temporibus veritatis?
-        </div>
-        <div className={classes.panels}>
-          <Card className={classes.panel} elevation={3}>
-            <Link to="/operations" className={classes.panelLink}>
-              {/* <CardMedia
-                className={classes.panelImage}
-                image="/static/images/cards/01.jpg"
-              /> */}
+        </Page.Body__Description>
+        <Page.Panels>
+          <Page.StyledPanel elevation={3}>
+            <Page.StyledPanel__Link to="/operations">
+              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Typography className={classes.panelText} component="h2">
+                <Page.StyledPanel__Text component="h2">
                   Поиск операций
-                </Typography>
+                </Page.StyledPanel__Text>
               </CardContent>
-            </Link>
-          </Card>
-          <Card className={classes.panel} elevation={3}>
-            <Link to="/directions" className={classes.panelLink}>
-              {/* <CardMedia
-                className={classes.panelImage}
-                image="/static/images/cards/02.jpg"
-              /> */}
+            </Page.StyledPanel__Link>
+          </Page.StyledPanel>
+          <Page.StyledPanel elevation={3}>
+            <Page.StyledPanel__Link to="/directions">
+              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Typography className={classes.panelText} component="h2">
+                <Page.StyledPanel__Text component="h3">
                   Справочники
-                </Typography>
+                </Page.StyledPanel__Text>
               </CardContent>
-            </Link>
-          </Card>
-          <Card className={classes.panel} elevation={3}>
-            <Link to="/admin" className={classes.panelLink}>
-              {/* <CardMedia component="img"
-                className={classes.panelImage}
-                image="/static/images/cards/03.jpg"
-              /> */}
+            </Page.StyledPanel__Link>
+          </Page.StyledPanel>
+          <Page.StyledPanel elevation={3}>
+            <Page.StyledPanel__Link to="/admin">
+              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Typography className={classes.panelText} component="h2">
+                <Page.StyledPanel__Text component="h2">
                   Администрирование
-                </Typography>
+                </Page.StyledPanel__Text>
               </CardContent>
-            </Link>
-          </Card>
-        </div>
-      </div>
-    </Container>
+            </Page.StyledPanel__Link>
+          </Page.StyledPanel>
+        </Page.Panels>
+      </Page.Body>
+    </Page.Content>
   );
 };
