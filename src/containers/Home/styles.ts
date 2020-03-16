@@ -20,19 +20,19 @@ const Header = styled.div`
   margin: 0 auto 30px;
 `;
 
-const Header__Logo = styled(Lock)`
+const HeaderLogo = styled(Lock)`
   width: 50px;
 })
 `;
 
-const Header__Title = styled(Typography)`
+const HeaderTitle = styled(Typography)`
   display: inline-block;
   margin-left: 5px;
 ` as typeof Typography;
 
 const Body = styled.div``;
 
-const Body__Description = styled.p`
+const BodyDescription = styled.p`
   margin-bottom: 30px;
 `;
 
@@ -49,27 +49,27 @@ const StyledPanel = styled(Card)`
   max-width: 250px;
   margin: 0 15px;
   height: 150px;
-  background-color: #046a38;
+  background-color: ${props => props.theme.colors.main};
   position: relative;
 ` as typeof Card;
 
-const StyledPanel__Link = styled(Link)`
+const StyledPanelLink = styled(Link)`
   display: flex;
   height: 100%;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.borderRadius};
   text-decoration: none;
   align-items: center;
   justify-content: center;
 `;
 
-const StyledPanel__Text = styled(Typography)`
+const StyledPanelText = styled(Typography)`
   font-size: 18px;
   font-weight: 400;
   padding: 0 20px;
   color: #fff;
 ` as typeof Typography;
 
-const StyledPanel__Image = styled.img`
+const StyledPanelImage = styled.img`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -80,13 +80,13 @@ const StyledPanel__Image = styled.img`
 export const Page = {
   Content,
   Header,
-  Header__Logo,
-  Header__Title,
+  HeaderLogo,
+  HeaderTitle,
   Body,
-  Body__Description,
+  BodyDescription,
   Panels,
   StyledPanel,
-  StyledPanel__Link,
-  StyledPanel__Text,
-  StyledPanel__Image
+  StyledPanelLink,
+  StyledPanelText,
+  StyledPanelImage
 };

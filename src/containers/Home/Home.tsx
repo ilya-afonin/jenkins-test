@@ -6,46 +6,46 @@ export const Home = (): JSX.Element => {
   return (
     <Page.Content>
       <Page.Header>
-        <Page.Header__Logo />
-        <Page.Header__Title variant="h1">CPS</Page.Header__Title>
+        <Page.HeaderLogo />
+        <Page.HeaderTitle variant="h1">CPS</Page.HeaderTitle>
       </Page.Header>
 
       <Page.Body>
-        <Page.Body__Description>
+        <Page.BodyDescription>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam velit
           commodi mollitia in ad iure nulla minus impedit quis, laudantium natus
           odio vel culpa. Illo totam placeat ab temporibus veritatis?
-        </Page.Body__Description>
+        </Page.BodyDescription>
         <Page.Panels>
           <Page.StyledPanel elevation={3}>
-            <Page.StyledPanel__Link to="/operations">
-              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
+            <Page.StyledPanelLink to="/operations">
+              {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanel__Text component="h2">
+                <Page.StyledPanelText component="h2">
                   Поиск операций
-                </Page.StyledPanel__Text>
+                </Page.StyledPanelText>
               </CardContent>
-            </Page.StyledPanel__Link>
+            </Page.StyledPanelLink>
           </Page.StyledPanel>
           <Page.StyledPanel elevation={3}>
-            <Page.StyledPanel__Link to="/directions">
-              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
+            <Page.StyledPanelLink to="/directions">
+              {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanel__Text component="h3">
+                <Page.StyledPanelText component="h3">
                   Справочники
-                </Page.StyledPanel__Text>
+                </Page.StyledPanelText>
               </CardContent>
-            </Page.StyledPanel__Link>
+            </Page.StyledPanelLink>
           </Page.StyledPanel>
           <Page.StyledPanel elevation={3}>
-            <Page.StyledPanel__Link to="/admin">
-              {/* <Page.StyledPanel__Image image="/static/images/cards/01.jpg"/> */}
+            <Page.StyledPanelLink to="/admin">
+              {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanel__Text component="h2">
+                <Page.StyledPanelText component="h2">
                   Администрирование
-                </Page.StyledPanel__Text>
+                </Page.StyledPanelText>
               </CardContent>
-            </Page.StyledPanel__Link>
+            </Page.StyledPanelLink>
           </Page.StyledPanel>
         </Page.Panels>
       </Page.Body>

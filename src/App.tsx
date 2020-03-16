@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { mainTheme } from "./theme";
 import Home from "./containers/Home";
 import Operations from "./containers/Operations";
 import Header from "./components/Header";
@@ -57,6 +59,7 @@ const App = (): JSX.Element => {
     return fetchUserInfo(result.token);
   };
   return (
+    <ThemeProvider theme={mainTheme}>
     <div className="app">
       <Router>
         <Header userInfo={value} />
@@ -71,6 +74,7 @@ const App = (): JSX.Element => {
         </Switch>
       </Router>
     </div>
+    </ThemeProvider>
   );
 };
 
