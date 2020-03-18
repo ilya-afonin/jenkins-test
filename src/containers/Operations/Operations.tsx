@@ -1,5 +1,6 @@
 import React from "react";
+import TableOperation from "../../components/TableOperation";
 
 export const Operations = () => {
-  return <div>Operations</div>;
+  return <TableOperation />;
 };

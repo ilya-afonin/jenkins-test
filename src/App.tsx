@@ -4,6 +4,7 @@ import Home from "./containers/Home";
 import Operations from "./containers/Operations";
 import Header from "./components/Header";
 import { IUserInfo } from "./common/Interfaces/Interfaces";
+import "typeface-roboto";
 import "./App.css";
 
 const App = (): JSX.Element => {
