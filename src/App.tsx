@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { mainTheme } from "./theme";
 import Home from "./containers/Home";
 import Operations from "./containers/Operations";
 import Header from "./components/Header";
@@ -58,26 +62,30 @@ const App = (): JSX.Element => {
     return fetchUserInfo(result.token);
   };
   return (
-    <div className="app">
-      <Router>
-        <Header userInfo={value} />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/operations" component={Operations} />
-          <Route
-            exact
-            path="/directions"
-            render={() => <div>directions</div>}
-          />
-          <Route exact path="/admin" render={() => <div>admin</div>} />
-          <Route
-            exact
-            path="*"
-            render={() => <div>Error, page not found!</div>}
-          />
-        </Switch>
-      </Router>
-    </div>
+    <Provider store={store}>
+      <ThemeProvider theme={mainTheme}>
+        <div className="app">
+          <Router>
+            <Header userInfo={value} />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/operations" component={Operations} />
+              <Route
+                exact
+                path="/directions"
+                render={() => <div>directions</div>}
+              />
+              <Route exact path="/admin" render={() => <div>admin</div>} />
+              <Route
+                exact
+                path="*"
+                render={() => <div>Error, page not found!</div>}
+              />
+            </Switch>
+          </Router>
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
