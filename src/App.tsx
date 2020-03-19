@@ -59,6 +59,7 @@ const App = (): JSX.Element => {
       }
     );
     const result = await response.json();
+    sessionStorage.setItem("session_token", result.token);
     return fetchUserInfo(result.token);
   };
   return (

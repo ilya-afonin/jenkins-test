@@ -1,29 +1,30 @@
 export interface IPaginationData {
-  transactionId: number;
-  pan: number;
+  amount: number;
+  authorizationCode: null | any;
+  countryCode: string;
+  currencyCode: number;
   expdate: number;
-  transactionType: number;
+  fraudVerdict: null | any;
+  hostResponseCode: null | any;
+  internalResponseCode: number;
+  issInst: number;
+  localDateTime: string;
+  mcc: number;
+  merchantId: string;
+  mti: number;
+  opDate: number;
+  pan: number;
+  panEntryMode: number;
   posDataCode: string;
   rrn: string;
   stan: number;
-  mti: number;
-  amount: number;
-  currencyCode: number;
-  opDate: number;
-  txnDateTime: number;
-  localDateTime: string;
-  issInst: number;
-  merchantId: string;
-  mcc: number;
-  countryCode: string;
-  terminalId: number;
+  tableData: Object | any;
+  terminalId: string;
   terminalType: number;
-  panEntryMode: number;
-  authorizationCode: null;
-  internalResponseCode: number;
-  hostResponseCode: string | null;
-  fraudVerdict: null;
+  transactionId: number;
+  transactionType: number;
+  txnDateTime: number;
 }
 export interface IPagination {
-  data: IPaginationData | [];
+  data: IPaginationData[] | [];
 }

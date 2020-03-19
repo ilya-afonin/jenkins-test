@@ -1,5 +1,10 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import MaterialTable, { Column } from "material-table";
+import { getPaginationDataAction } from "../../redux/action/operation.action";
+import { IPaginationData } from "../../redux/types/operation.types";
+import { IStore } from "../../redux/types/store.types";
+import { useHttp } from "../../hooks/http.hook";
 import { useStyles } from "./styles";
 import {
   Remove,
@@ -25,8 +30,8 @@ interface IRow {
 }
 
 interface ITableState {
-  columns: Array<Column<IRow>>;
-  data: IRow[];
+  columns: Array<Column<IPaginationData>>;
+  data: IPaginationData[] | [];
 }
 
 /**
@@ -36,23 +41,78 @@ interface ITableState {
  * @prop {object} value User info.
  */
 export const TableOperation = () => {
-  const classes = useStyles();
-  const [state, setState] = useState<ITableState>({
+  useEffect(() => {
+    const asyncFetch = async (): Promise<void> => {
+      const token = await sessionStorage.getItem("session_token");
+      if (token) {
+        getRequest(1, token);
+      }
+    };
+    asyncFetch();
+  }, []);
+  console.log(useSelector((state: IStore) => state.operation.data));
+  const table: ITableState = {
+    data: useSelector((state: IStore) => state.operation.data),
     columns: [
-      { title: "Name", field: "surname" },
-      { title: "Name1", field: "name" },
-      { title: "Name2", field: "name" },
-      { title: "Name3", field: "surname" }
-    ],
-    data: [
-      { name: "qwe1", surname: "qwe" },
-      { name: "qwe2", surname: "qwe" },
-      { name: "qwe3", surname: "qwe" },
-      { name: "qwe4", surname: "qwe" }
+      { title: "#", field: "id" },
+      { title: "TXN_ID", field: "transactionId" },
+      { title: "Карта", field: "pan" },
+      { title: "Срок действия", field: "expdate" },
+      { title: "Тип транзакции", field: "transactionType" },
+      { title: "RRN", field: "rrn" },
+      { title: "STAN", field: "stan" },
+      { title: "Сумма траназкции", field: "amount" },
+      { title: "Валюта транзакции", field: "transactionType" },
+      { title: "Сист. Дата и время", field: "opDate" },
+      { title: "Тран. Дата и время", field: "txnDateTime" },
+      { title: "Лок. дата и время", field: "" },
+      { title: "MTI", field: "mti" },
+      { title: "Код института эмитента", field: "issInst" },
+      { title: "Мерчант", field: "merchantId" },
+      { title: "MCC", field: "mcc" },
+      { title: "Страна", field: "countryCode" },
+      { title: "ID терминала", field: "terminalId" },
+      { title: "Тип терминала", field: "terminalType" },
+      { title: "POS_DATA_CODE", field: "posDataCode" },
+      { title: "Метод чтения карты", field: "panEntryMode" },
+      { title: "Код авторизации", field: "authorizationCode" },
+      { title: "Внутренний код ответа", field: "internalResponseCode" },
+      { title: "Код ответа хоста", field: "hostResponseCode" },
+      { title: "Код ответа Фрод-мониторинга", field: "fraudVerdict" }
     ]
-  });
+  };
+  const dispatch = useDispatch();
+  const { loading, request, error, clearError } = useHttp();
+  const classes = useStyles();
+
+  const getRequest = async (pageNum: number, token: string) => {
+    const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
+    const pageNumber = { pageNum: pageNum };
+    let formData = new FormData();
+    formData.append("csrfToken", token);
+    formData.append("pageRequest", JSON.stringify(pageNumber));
+    const dataTable = await request(url, "POST", formData);
+    dispatch(getPaginationDataAction(dataTable.data));
+  };
   return (
     <MaterialTable
+      localization={{
+        pagination: {}
+      }}
+      options={{
+        pageSize: 20,
+        pageSizeOptions: [20],
+        draggable: false,
+        toolbar: false,
+        padding: "dense",
+        headerStyle: {
+          fontSize: "11px",
+          fontWeight: "bold",
+          lineHeight: 1.2
+        }
+      }}
+      isLoading={loading}
+      style={{ marginTop: "50px" }}
       // onColumnDragged={(e, i) => console.log(e, i)}
       icons={{
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -89,8 +149,8 @@ export const TableOperation = () => {
           <ViewColumn {...props} ref={ref} />
         ))
       }}
-      columns={state.columns}
-      data={state.data}
+      columns={table.columns}
+      data={table.data}
     />
   );
 };
