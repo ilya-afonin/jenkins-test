@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from 'styled-components';
+import { MuiThemeProvider, StylesProvider } from '@material-ui/core';
 import { mainTheme } from "./theme";
 import Home from "./containers/Home";
 import Operations from "./containers/Operations";
@@ -11,7 +12,7 @@ import { IUserInfo } from "./common/Interfaces/Interfaces";
 import "./App.css";
 
 const App = (): JSX.Element => {
-  const [value, setValue] = useState<IUserInfo | null>(null);
+  const [value, setValue] = useState < IUserInfo | null>(null);
   useEffect(() => {
     const asyncFetch = async (): Promise<void> => {
       await fetchDataPost();
@@ -22,13 +23,13 @@ const App = (): JSX.Element => {
 
   // Берём данные юзера и отрисовываем в хэдере.
   const fetchUserInfo = async (token: string): Promise<void> => {
-    const url = "httpbridge-server/invoke/cpsadminservice/userService/userInfo";
+    const url = 'httpbridge-server/invoke/cpsadminservice/userService/userInfo';
     let formData = new FormData();
-    formData.append("csrfToken", token);
+    formData.append('csrfToken', token);
     const response = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      body: formData
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
     });
     const result = await response.json();
     await setValue(result);
@@ -36,55 +37,52 @@ const App = (): JSX.Element => {
 
   // Отправляем логин и пароль и получаем куки.
   const fetchDataPost = async (): Promise<void> => {
-    let username = "test_user";
-    let password = "test_user";
+    let username = 'test_user';
+    let password = 'test_user';
     let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    await fetch("httpbridge-server/login", {
-      method: "POST",
-      credentials: "include",
-      body: formData
+    formData.append('username', username);
+    formData.append('password', password);
+    await fetch('httpbridge-server/login', {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
     });
   };
 
   // Получаем токен и кладём в sessionStorage
   const fetchDataGet = async (): Promise<void> => {
-    const response = await fetch(
-      "httpbridge-server/csrfToken/get?moduleId=cpsadminservice",
-      {
-        method: "GET",
-        credentials: "include"
-      }
-    );
+    const response = await fetch('httpbridge-server/csrfToken/get?moduleId=cpsadminservice', {
+      method: 'GET',
+      credentials: 'include',
+    });
     const result = await response.json();
+    console.log('token', result);
+    sessionStorage.setItem('session_storage', result.token);
     return fetchUserInfo(result.token);
   };
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={mainTheme}>
-        <div className="app">
-          <Router>
-            <Header userInfo={value} />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/operations" component={Operations} />
-              <Route
-                exact
-                path="/directions"
-                render={() => <div>directions</div>}
-              />
-              <Route exact path="/admin" render={() => <div>admin</div>} />
-              <Route
-                exact
-                path="*"
-                render={() => <div>Error, page not found!</div>}
-              />
-            </Switch>
-          </Router>
-        </div>
-      </ThemeProvider>
-    </Provider>
+  <Provider store={store}>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={mainTheme}>
+        <ThemeProvider theme={mainTheme}>
+          <div className="app">
+            <Router>
+              <Header userInfo={value} />
+              <div className="app-content">
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/operations" component={Operations} />
+                  <Route exact path="/directions" render={() => <div>directions</div>} />
+                  <Route exact path="/admin" render={() => <div>admin</div>} />
+                  <Route exact path="*" render={() => <div>Error, page not found!</div>} />
+                </Switch>
+              </div>
+            </Router>
+          </div>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
+  </Provider>
   );
 };
 

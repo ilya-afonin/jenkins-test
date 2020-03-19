@@ -1,12 +1,7 @@
 import 'styled-components'
 
-declare module 'styled-components' {
-  export interface DefaultTheme {
-    borderRadius: string
-    
-    colors: {
-      main: string
-      secondary: string
-    }
+declare module '@material-ui/core/styles/createMuiTheme' {
+  export interface ThemeOptions {
+    borderRadius?: string,
   }
 }
