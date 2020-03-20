@@ -1,5 +1,5 @@
-import { IPagination } from "../../redux/types/operation.types";
+import { IOperationReducer } from "../../redux/types/operation.types";
 
 export interface IStore {
-  operation: IPagination;
+  operation: IOperationReducer;
 }

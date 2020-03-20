@@ -25,6 +25,13 @@ export interface IPaginationData {
   transactionType: number;
   txnDateTime: number;
 }
+
+export interface IOperationReducer {
+  tableOperation: IPagination | {};
+}
 export interface IPagination {
   data: IPaginationData[] | [];
+  pageNum: number;
+  size: number;
+  totalTxs: number;
 }

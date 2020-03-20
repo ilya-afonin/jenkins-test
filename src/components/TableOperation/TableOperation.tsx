@@ -1,10 +1,12 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MaterialTable, { Column } from "material-table";
+import { TablePagination } from "@material-ui/core";
 import { getPaginationDataAction } from "../../redux/action/operation.action";
-import { IPaginationData } from "../../redux/types/operation.types";
+import { IOperationReducer } from "../../redux/types/operation.types";
 import { IStore } from "../../redux/types/store.types";
 import { useHttp } from "../../hooks/http.hook";
+import { headerConfig } from "./config";
 import { useStyles } from "./styles";
 import {
   Remove,
@@ -24,14 +26,9 @@ import {
   Edit
 } from "@material-ui/icons";
 
-interface IRow {
-  name: string;
-  surname: string;
-}
-
 interface ITableState {
-  columns: Array<Column<IPaginationData>>;
-  data: IPaginationData[] | [];
+  columns: Array<Column<IOperationReducer>>;
+  tableOperation: IOperationReducer[] | any;
 }
 
 /**
@@ -45,42 +42,19 @@ export const TableOperation = () => {
     const asyncFetch = async (): Promise<void> => {
       const token = await sessionStorage.getItem("session_token");
       if (token) {
-        getRequest(1, token);
+        getRequest(0, token);
       }
     };
     asyncFetch();
   }, []);
-  console.log(useSelector((state: IStore) => state.operation.data));
+
   const table: ITableState = {
-    data: useSelector((state: IStore) => state.operation.data),
-    columns: [
-      { title: "#", field: "id" },
-      { title: "TXN_ID", field: "transactionId" },
-      { title: "Карта", field: "pan" },
-      { title: "Срок действия", field: "expdate" },
-      { title: "Тип транзакции", field: "transactionType" },
-      { title: "RRN", field: "rrn" },
-      { title: "STAN", field: "stan" },
-      { title: "Сумма траназкции", field: "amount" },
-      { title: "Валюта транзакции", field: "transactionType" },
-      { title: "Сист. Дата и время", field: "opDate" },
-      { title: "Тран. Дата и время", field: "txnDateTime" },
-      { title: "Лок. дата и время", field: "" },
-      { title: "MTI", field: "mti" },
-      { title: "Код института эмитента", field: "issInst" },
-      { title: "Мерчант", field: "merchantId" },
-      { title: "MCC", field: "mcc" },
-      { title: "Страна", field: "countryCode" },
-      { title: "ID терминала", field: "terminalId" },
-      { title: "Тип терминала", field: "terminalType" },
-      { title: "POS_DATA_CODE", field: "posDataCode" },
-      { title: "Метод чтения карты", field: "panEntryMode" },
-      { title: "Код авторизации", field: "authorizationCode" },
-      { title: "Внутренний код ответа", field: "internalResponseCode" },
-      { title: "Код ответа хоста", field: "hostResponseCode" },
-      { title: "Код ответа Фрод-мониторинга", field: "fraudVerdict" }
-    ]
+    tableOperation: useSelector(
+      (state: IStore) => state.operation.tableOperation
+    ),
+    columns: headerConfig
   };
+  const [countPage, setCountPage] = useState(0);
   const dispatch = useDispatch();
   const { loading, request, error, clearError } = useHttp();
   const classes = useStyles();
@@ -92,10 +66,44 @@ export const TableOperation = () => {
     formData.append("csrfToken", token);
     formData.append("pageRequest", JSON.stringify(pageNumber));
     const dataTable = await request(url, "POST", formData);
-    dispatch(getPaginationDataAction(dataTable.data));
+    dispatch(getPaginationDataAction(dataTable));
   };
+
+  const handleChangePage = (page: number) => {
+    setCountPage(page);
+    const token = sessionStorage.getItem("session_token");
+    if (token) {
+      getRequest(page, token);
+    }
+  };
+
+  const renderDataTable = (data: any) => {
+    return data.map((item: any, i: any) => {
+      return {
+        ...item,
+        id: i + 1
+      };
+    });
+  };
+
   return (
     <MaterialTable
+      components={{
+        Pagination: props => (
+          <TablePagination
+            {...props}
+            // rowsPerPageOptions={[20]}
+            rowsPerPage={20}
+            count={
+              Object.keys(table.tableOperation).length !== 0
+                ? table.tableOperation.totalTxs
+                : 1
+            }
+            page={countPage}
+            onChangePage={(e: any, page: number) => handleChangePage(page)}
+          />
+        )
+      }}
       localization={{
         pagination: {}
       }}
@@ -150,7 +158,9 @@ export const TableOperation = () => {
         ))
       }}
       columns={table.columns}
-      data={table.data}
+      data={renderDataTable(
+        table.tableOperation.data === undefined ? [] : table.tableOperation.data
+      )}
     />
   );
 };
