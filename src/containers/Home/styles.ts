@@ -1,8 +1,9 @@
+import { Theme } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
-
+import styled from "styled-components";
 import { Lock } from "@material-ui/icons";
 import { Card, Container, Typography } from "@material-ui/core";
-import styled from "styled-components";
+
 
 const Content = styled(Container)`
   font-size: 20px;
@@ -23,7 +24,7 @@ const Header = styled.div`
 const HeaderLogo = styled(Lock)`
   width: 50px;
 })
-`;
+` as typeof Lock;
 
 const HeaderTitle = styled(Typography)`
   display: inline-block;
@@ -44,19 +45,23 @@ const Panels = styled.div`
   margin: 0 -15px;
 `;
 
-const StyledPanel = styled(Card)`
-  flex: 0 0 33.33333%;
-  max-width: 250px;
-  margin: 0 15px;
-  height: 150px;
-  background-color: ${props => props.theme.colors.main};
-  position: relative;
+const StyledPanel = styled(Card)<{theme: Theme}>`
+  ${({theme}) => (
+    console.log(theme),
+    `
+    flex: 0 0 33.33333%;
+    max-width: 250px;
+    margin: 0 15px;
+    height: 150px;
+    background-color: ${theme.palette.primary.main};
+    border-radius: ${theme.borderRadius};
+    position: relative;
+  `)}
 ` as typeof Card;
 
 const StyledPanelLink = styled(Link)`
   display: flex;
   height: 100%;
-  border-radius: ${props => props.theme.borderRadius};
   text-decoration: none;
   align-items: center;
   justify-content: center;
