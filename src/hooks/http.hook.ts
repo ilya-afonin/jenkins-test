@@ -7,7 +7,7 @@ export const useHttp = () => {
     async (url, method = "GET", body = null) => {
       setLoading(true);
       try {
-        
+
         const response = await fetch(url, { method, body, credentials: 'include' });
         const data = await response.json();
 

@@ -1,6 +1,6 @@
-import React from "react";
-import { CardContent } from "@material-ui/core";
-import { Page } from "./styles";
+import React from 'react';
+import { CardContent } from '@material-ui/core';
+import { Page } from './styles';
 
 export const Home = (): JSX.Element => {
   return (
@@ -12,18 +12,16 @@ export const Home = (): JSX.Element => {
 
       <Page.Body>
         <Page.BodyDescription>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam velit
-          commodi mollitia in ad iure nulla minus impedit quis, laudantium natus
-          odio vel culpa. Illo totam placeat ab temporibus veritatis?
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam velit commodi mollitia in
+          ad iure nulla minus impedit quis, laudantium natus odio vel culpa. Illo totam placeat ab
+          temporibus veritatis?
         </Page.BodyDescription>
         <Page.Panels>
           <Page.StyledPanel elevation={3}>
             <Page.StyledPanelLink to="/operations">
               {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanelText component="h2">
-                  Поиск операций
-                </Page.StyledPanelText>
+                <Page.StyledPanelText component="h2">Поиск операций</Page.StyledPanelText>
               </CardContent>
             </Page.StyledPanelLink>
           </Page.StyledPanel>
@@ -31,9 +29,7 @@ export const Home = (): JSX.Element => {
             <Page.StyledPanelLink to="/directions">
               {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanelText component="h3">
-                  Справочники
-                </Page.StyledPanelText>
+                <Page.StyledPanelText component="h2">Справочники</Page.StyledPanelText>
               </CardContent>
             </Page.StyledPanelLink>
           </Page.StyledPanel>
@@ -41,9 +37,7 @@ export const Home = (): JSX.Element => {
             <Page.StyledPanelLink to="/admin">
               {/* <Page.StyledPanelImage image="/static/images/cards/01.jpg"/> */}
               <CardContent>
-                <Page.StyledPanelText component="h2">
-                  Администрирование
-                </Page.StyledPanelText>
+                <Page.StyledPanelText component="h2">Администрирование</Page.StyledPanelText>
               </CardContent>
             </Page.StyledPanelLink>
           </Page.StyledPanel>

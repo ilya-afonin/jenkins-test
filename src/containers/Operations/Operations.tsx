@@ -2,12 +2,12 @@ import React from 'react';
 import { useHttp } from '../../hooks/http.hook';
 import FormOperation from '../../components/FormOperation';
 import { Grid, Box } from '@material-ui/core';
-import TableOperation  from '../../components/TableOperation';
+import TableOperation from '../../components/TableOperation';
 
 export const Operations = () => {
   const { request } = useHttp();
-  
-  const requestData = async (formData: any): Promise<any> => {    
+
+  const requestData = async (formData: any): Promise<any> => {
     try {
       let body = new FormData();
       // Object.keys(formData).forEach((key) => body.append(key, formData[key]));
@@ -31,9 +31,9 @@ export const Operations = () => {
           <FormOperation getFilteredData={requestData} />
         </Grid>
         <Grid item xs={12}>
-         <TableOperation />
+          <TableOperation />
         </Grid>
-        <Grid style={{height: "200px"}} item xs={12}>
+        <Grid style={{ height: '200px' }} item xs={12}>
           <div className="Detail"></div>
         </Grid>
       </Grid>

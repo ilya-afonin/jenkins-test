@@ -1,27 +1,32 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jasmine": true,
+        "jest": true
     },
     "ecmaFeatures": {
         "arrowFunctions": true
     },
     "extends": [
         "airbnb",
-        "prettier",
-        "prettier/react",
-        "plugin:prettier/recommended",
         "eslint:recommended",
-        //"plugin:react/recommended",
-        // "plugin:@typescript-eslint/recommended",
-        // "plugin:@typescript-eslint/eslint-recommended",
-        //"plugin:prettier/recommended"
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
     "parser": "@typescript-eslint/parser",
+    // "settings": {
+    //     "react": {
+    //         "pragma": "React",
+    //         "version": "detect"
+    //     }
+    // },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -35,10 +40,11 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": 2,
-        // "no-unused-vars": 1,
+        "prettier/prettier": ["error", {"singleQuote": true}],
+        "no-unused-vars": 1,
         "no-var": 2,
         "no-console": "warn",
+        "no-empty": "warn",
         "require-jsdoc": ["error", {
             "require": {
                 "FunctionDeclaration": false,
@@ -61,7 +67,7 @@
             "requireReturnDescription": true,
             "requireParamType": true
         }],
-        "@typescript-eslint/explicit-function-return-type": "warn",
-        "no-empty": "warn"
+        "@typescript-eslint/explicit-member-accesibility": 0,
+        "@typescript-eslint/explicit-function-return-type": 0       
     }
 }

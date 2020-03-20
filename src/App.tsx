@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Provider } from "react-redux";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { MuiThemeProvider, StylesProvider } from '@material-ui/core';
-import { mainTheme } from "./theme";
-import store from "./redux/store";
-import Home from "./containers/Home";
-import Operations from "./containers/Operations";
-import Header from "./components/Header";
-import { IUserInfo } from "./common/Interfaces/Interfaces";
+import { mainTheme } from './theme';
+import store from './redux/store';
+import Home from './containers/Home';
+import Operations from './containers/Operations';
+import Header from './components/Header';
+import { IUserInfo } from './common/Interfaces/Interfaces';
 import GlobalFonts from './fonts/fonts';
-import "./App.css";
+import './App.css';
 
 const App = (): JSX.Element => {
-  const [value, setValue] = useState < IUserInfo | null>(null);
+  const [value, setValue] = useState <IUserInfo | null>(null);
   useEffect(() => {
     const asyncFetch = async (): Promise<void> => {
       await fetchDataPost();
@@ -57,7 +57,7 @@ const App = (): JSX.Element => {
       credentials: 'include',
     });
     const result = await response.json();
-    sessionStorage.setItem("session_token", result.token);
+    sessionStorage.setItem('session_token', result.token);
     return fetchUserInfo(result.token);
   };
   return (
