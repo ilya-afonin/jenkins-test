@@ -4,11 +4,11 @@ export const useHttp = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<object | null>(null);
   const request = useCallback(
-    async (url, method = "GET", body = null, headers = {}) => {
+    async (url, method = "GET", body = null) => {
       setLoading(true);
       try {
         
-        const response = await fetch(url, { method, body, headers, credentials: 'include' });
+        const response = await fetch(url, { method, body, credentials: 'include' });
         const data = await response.json();
 
         //TODO: Переделать обработку ошибок с сервера.

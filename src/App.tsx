@@ -56,8 +56,7 @@ const App = (): JSX.Element => {
       credentials: 'include',
     });
     const result = await response.json();
-    console.log('token', result);
-    sessionStorage.setItem('session_storage', result.token);
+    sessionStorage.setItem("session_token", result.token);
     return fetchUserInfo(result.token);
   };
   return (
