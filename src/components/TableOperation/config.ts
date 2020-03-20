@@ -7,7 +7,7 @@ export const headerConfig = [
   { title: "RRN", field: "rrn" },
   { title: "STAN", field: "stan" },
   { title: "Сумма траназкции", field: "amount" },
-  { title: "Валюта транзакции", field: "transactionType" },
+  { title: "Валюта транзакции", field: "currencyCode" },
   { title: "Сист. Дата и время", field: "opDate" },
   { title: "Тран. Дата и время", field: "txnDateTime" },
   { title: "Лок. дата и время", field: "localDateTime" },
