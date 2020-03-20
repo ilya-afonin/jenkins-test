@@ -11,7 +11,7 @@ export const Operations = () => {
     try {
       let body = new FormData();
       // Object.keys(formData).forEach((key) => body.append(key, formData[key]));
-      const token = sessionStorage.getItem('session_storage');
+      const token = sessionStorage.getItem('session_token');
       if (token) body.append('csrfToken', token);
       body.append('pageRequest', JSON.stringify({ pageNum: 0 }));
       let data = await request(
@@ -33,7 +33,7 @@ export const Operations = () => {
         <Grid item xs={12}>
          <TableOperation />
         </Grid>
-        <Grid item xs={12}>
+        <Grid style={{height: "200px"}} item xs={12}>
           <div className="Detail"></div>
         </Grid>
       </Grid>

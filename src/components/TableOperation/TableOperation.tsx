@@ -108,19 +108,19 @@ export const TableOperation = () => {
         pagination: {}
       }}
       options={{
+        maxBodyHeight: "400px",
         pageSize: 20,
         pageSizeOptions: [20],
         draggable: false,
         toolbar: false,
         padding: "dense",
         headerStyle: {
-          fontSize: "11px",
+          fontSize: "12px",
           fontWeight: "bold",
           lineHeight: 1.2
         }
       }}
       isLoading={loading}
-      style={{ marginTop: "50px" }}
       // onColumnDragged={(e, i) => console.log(e, i)}
       icons={{
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
