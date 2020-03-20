@@ -23,7 +23,6 @@ const Header = styled.div`
 
 const HeaderLogo = styled(Lock)`
   width: 50px;
-})
 ` as typeof Lock;
 
 const HeaderTitle = styled(Typography)`
@@ -45,9 +44,8 @@ const Panels = styled.div`
   margin: 0 -15px;
 `;
 
-const StyledPanel = styled(Card)<{theme: Theme}>`
-  ${({theme}) => (
-    console.log(theme),
+const StyledPanel = styled(Card) <{ theme: Theme }>`
+  ${({ theme }) => (
     `
     flex: 0 0 33.33333%;
     max-width: 250px;
