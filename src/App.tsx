@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import store from "./redux/store";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from 'styled-components';
 import { MuiThemeProvider, StylesProvider } from '@material-ui/core';
 import { mainTheme } from "./theme";
+import store from "./redux/store";
 import Home from "./containers/Home";
 import Operations from "./containers/Operations";
 import Header from "./components/Header";
 import { IUserInfo } from "./common/Interfaces/Interfaces";
+import GlobalFonts from './fonts/fonts';
 import "./App.css";
 
 const App = (): JSX.Element => {
@@ -64,7 +65,8 @@ const App = (): JSX.Element => {
     <StylesProvider injectFirst>
       <MuiThemeProvider theme={mainTheme}>
         <ThemeProvider theme={mainTheme}>
-          <div className="app">
+          <GlobalFonts/>
+          <div className="app">            
             <Router>
               <Header userInfo={value} />
               <div className="app-content">
