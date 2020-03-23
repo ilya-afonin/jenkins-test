@@ -8,11 +8,22 @@
     "ecmaFeatures": {
         "arrowFunctions": true
     },
+    "plugins": [
+        "react",
+        "react-hooks",
+        "promise",
+        "sonarjs",
+        "@typescript-eslint",
+        "prettier"
+    ],
     "extends": [
-        "airbnb",
+        "airbnb-typescript",
         "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-cheking",
+        "plugin:promise/recommended",
         "prettier/@typescript-eslint",
         "plugin:prettier/recommended"
     ],
@@ -21,12 +32,12 @@
         "SharedArrayBuffer": "readonly"
     },
     "parser": "@typescript-eslint/parser",
-    // "settings": {
-    //     "react": {
-    //         "pragma": "React",
-    //         "version": "detect"
-    //     }
-    // },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "detect"
+        }
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -34,11 +45,7 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": [
-        "react",
-        "@typescript-eslint",
-        "prettier"
-    ],
+    
     "rules": {
         "prettier/prettier": ["error", {"singleQuote": true}],
         "no-unused-vars": 1,
@@ -67,7 +74,11 @@
             "requireReturnDescription": true,
             "requireParamType": true
         }],
+
+        "promise/prefer-await-to-then": "error",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "@typescript-eslint/explicit-member-accesibility": 0,
-        "@typescript-eslint/explicit-function-return-type": 0       
+        "@typescript-eslint/explicit-function-return-type": 0
     }
 }
