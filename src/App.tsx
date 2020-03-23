@@ -13,7 +13,7 @@ import GlobalFonts from './fonts/fonts';
 import './App.css';
 
 const App = (): JSX.Element => {
-  const [value, setValue] = useState <IUserInfo | null>(null);
+  const [value, setValue] = useState< IUserInfo | null >(null);
   useEffect(() => {
     const asyncFetch = async (): Promise<void> => {
       await fetchDataPost();
@@ -61,29 +61,29 @@ const App = (): JSX.Element => {
     return fetchUserInfo(result.token);
   };
   return (
-  <Provider store={store}>
-    <StylesProvider injectFirst>
-      <MuiThemeProvider theme={mainTheme}>
-        <ThemeProvider theme={mainTheme}>
-          <GlobalFonts/>
-          <div className="app">            
-            <Router>
-              <Header userInfo={value} />
-              <div className="app-content">
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/operations" component={Operations} />
-                  <Route exact path="/directions" render={() => <div>directions</div>} />
-                  <Route exact path="/admin" render={() => <div>admin</div>} />
-                  <Route exact path="*" render={() => <div>Error, page not found!</div>} />
-                </Switch>
-              </div>
-            </Router>
-          </div>
-        </ThemeProvider>
-      </MuiThemeProvider>
-    </StylesProvider>
-  </Provider>
+    <Provider store={store}>
+      <StylesProvider injectFirst>
+        <MuiThemeProvider theme={mainTheme}>
+          <ThemeProvider theme={mainTheme}>
+            <GlobalFonts />
+            <div className="app">
+              <Router>
+                <Header userInfo={value} />
+                <div className="app-content">
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/operations" component={Operations} />
+                    <Route exact path="/directions" render={() => <div>directions</div>} />
+                    <Route exact path="/admin" render={() => <div>admin</div>} />
+                    <Route exact path="*" render={() => <div>Error, page not found!</div>} />
+                  </Switch>
+                </div>
+              </Router>
+            </div>
+          </ThemeProvider>
+        </MuiThemeProvider>
+      </StylesProvider>
+    </Provider>
   );
 };
 

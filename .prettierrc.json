@@ -10,7 +10,7 @@
     "bracketSpacing": true,
     "jsxBracketsSameLine": false,
     "arrowParens": "always",
-    "parser": "babel",
+    "parser": "typescript",
     "requirePragma": false,
     "insertPragma": false,
     "proseWrap": "always",
