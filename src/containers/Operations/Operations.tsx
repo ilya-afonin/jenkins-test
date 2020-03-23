@@ -26,6 +26,11 @@ export const Operations = () => {
       console.error('no token');
     }
   };
+// Метод возвращает номер текущей страницы и делает запрос на сервер.
+  const handleChangePage = (page: number) => {
+    requestData(page);
+  };
+
   return (
     <Box p={1}>
       <Grid container>
@@ -34,7 +39,7 @@ export const Operations = () => {
         </Grid>
         <Grid item xs={12}>
           <TableOperation
-            getPaginationData={requestData}
+            getPaginationData={handleChangePage}
             useHttp={{ loading, request, error, clearError }}
           />
         </Grid>

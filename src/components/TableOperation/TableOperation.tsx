@@ -1,5 +1,6 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
 import { IOperationReducer } from '../../redux/types/operation.types';
@@ -29,7 +30,7 @@ interface ITableState {
 }
 
 interface ITableOperation {
-  getPaginationData(page: number): void,
+  getPaginationData: (page: number) => void,
   useHttp: { loading: boolean, request: any, error: any, clearError: any },
 }
 
@@ -48,15 +49,14 @@ export const TableOperation = (
   };
   const [countPage, setCountPage] = useState(0);
 
-  const handleChangePage = (page: number) => {
-    getPaginationData(page);
-  };
-
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: any) => {
       return {
         ...item,
         id: i + 1,
+        opDate: format(+item.opDate, 'dd.MM.yyyy hh.mm.ss'),
+        txnDateTime: format(+item.txnDateTime, 'dd.MM.yyyy hh.mm.ss'),
+        localDateTime: format(+item.localDateTime, 'dd.MM.yyyy hh.mm.ss'),
       };
     });
   };
@@ -67,13 +67,15 @@ export const TableOperation = (
         Pagination: props => (
           <TablePagination
             {...props}
-            // rowsPerPageOptions={[20]}
             rowsPerPage={20}
             count={
               Object.keys(table.tableOperation).length !== 0 ? table.tableOperation.totalTxs : 1
             }
             page={countPage}
-            onChangePage={(e: any, page: number) => handleChangePage(page)}
+            onChangePage={(e: any, page: number) => {
+              setCountPage(page);
+              return getPaginationData(page);
+            }}
           />
         ),
       }}
