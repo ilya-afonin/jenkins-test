@@ -17,7 +17,6 @@
     "date-fns": "^2.11.0",
     "json-to-ts": "^1.6.0",
     "material-table": "^1.57.2",
-    "normalize.css": "^8.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-hook-form": "^4.5.3",

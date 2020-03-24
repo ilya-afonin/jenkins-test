@@ -2,12 +2,18 @@ import { IOperationReducer } from "../types/operation.types";
 import { Constants } from "../consts/operation.const";
 
 const initialState: IOperationReducer = {
-  tableOperation: {}
+  tableOperation: {},
+  formOperation: {}
 };
+
+interface IOperationAction {
+  type: Constants,
+  payload: any
+}
 
 export const operationReducer = (
   state: IOperationReducer = initialState,
-  action: any
+  action: IOperationAction
 ) => {
   switch (action.type) {
     case Constants.GET_TABLE_PAGINATION:
@@ -15,6 +21,11 @@ export const operationReducer = (
         ...state,
         tableOperation: action.payload.data
       };
+    case Constants.SAVE_FORM_DATA:
+      return {
+        ...state,
+        formOperation: action.payload.formData
+      }
     default:
       return state;
   }

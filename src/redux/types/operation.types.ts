@@ -26,12 +26,37 @@ export interface IPaginationData {
   txnDateTime: number;
 }
 
+export interface IFormState {
+  dateFrom: Date,
+  timeFrom: string,
+  dateEnd: Date,
+  timeEnd: string,
+  rrn?: number,
+  pan?: number,
+  amount?: number,
+  merchantId?: string,
+  authorizationCode?: string,
+  startTimestamp?: number,
+  endTimestamp?: number
+}
+
+export interface IFormRequest {
+  pan?: number,
+  authorizationCode?: string,
+  merchantId?: string,
+  rrn?: number, 
+  amount?: number,
+  startTimestamp?: number,
+  endTimestamp?: number
+}
+
 export interface IOperationReducer {
   tableOperation: IPagination | {};
+  formOperation: IFormState | {};
 }
 export interface IPagination {
-  data: IPaginationData[] | [];
-  pageNum: number;
-  size: number;
-  totalTxs: number;
+  data?: IPaginationData[] | [];
+  pageNum?: number;
+  size?: number;
+  totalTxs?: number;
 }
