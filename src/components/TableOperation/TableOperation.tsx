@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
-import { IOperationReducer } from '../../redux/types/operation.types';
+import { IOperationReducer, IFormState } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 import { headerConfig } from './config';
 import {
@@ -30,7 +30,7 @@ interface ITableState {
 }
 
 interface ITableOperation {
-  getPaginationData: (page: number) => void,
+  getPaginationData(pageNum: number): void,
   useHttp: { loading: boolean, request: any, error: any, clearError: any },
 }
 
@@ -47,6 +47,8 @@ export const TableOperation = (
     tableOperation: useSelector((state: IStore) => state.operation.tableOperation),
     columns: headerConfig,
   };
+  
+
   const [countPage, setCountPage] = useState(0);
 
   const renderDataTable = (data: any) => {
