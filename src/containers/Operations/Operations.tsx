@@ -12,18 +12,18 @@ export const Operations = () => {
   const { loading, request, error, clearError } = useHttp();
   const dispatch = useDispatch();
   const filter: IFormRequest = useSelector((state: IStore) => state.operation.formOperation);
-  const dataForTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
+  const dataTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
 
   const requestData = async (pageNum = 0, filter: IFormRequest | null): Promise<void> => {
     const token = await sessionStorage.getItem('session_token');
     if (token) {
       const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
-      const pageRequest = { filter: filter, pageNum: dataForTable.pageNum };
+      const pageRequest = { filter: filter, pageNum: dataTable.pageNum };
       let formData = new FormData();
       formData.append('csrfToken', token);
       formData.append('pageRequest', JSON.stringify(pageRequest));
-      const dataTable = await request(url, 'POST', formData);
-      dispatch(getData(dataTable));
+      const data = await request(url, 'POST', formData);
+      dispatch(getData(data));
     } else {
       console.error('no token');
     }
@@ -35,7 +35,7 @@ export const Operations = () => {
 
   const filterData = (formData: IFormRequest) => {
     dispatch(saveFormData(formData));
-    requestData(dataForTable.pageNum, formData);
+    requestData(dataTable.pageNum, formData);
   };
 
   return (
@@ -49,7 +49,7 @@ export const Operations = () => {
             getPaginationData={changePageHandler}
             loading={loading}
             error={error}
-            dataTable={dataForTable}
+            dataTable={dataTable}
           />
         </Grid>
         <Grid style={{ height: '200px' }} item xs={12}>
