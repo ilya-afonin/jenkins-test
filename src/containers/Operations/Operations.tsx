@@ -12,23 +12,22 @@ export const Operations = () => {
   const { loading, request, error, clearError } = useHttp();
   const dispatch = useDispatch();
   const filter: IFormRequest = useSelector((state: IStore) => state.operation.formOperation);
-  const { pageNum }: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
+  const dataTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
 
   const requestData = async (pageNum = 0, filter: IFormRequest | null): Promise<void> => {
-      const token = await sessionStorage.getItem('session_token');
-      if (token) {
-        const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
-        const pageRequest = { filter: filter, pageNum: pageNum };
-        let formData = new FormData();
-        formData.append('csrfToken', token);
-        formData.append('pageRequest', JSON.stringify(pageRequest));
-        const dataTable = await request(url, 'POST', formData);
-        dispatch(getData(dataTable));
-      } else {
-        console.error('no token');
-      }
-    };
-
+    const token = await sessionStorage.getItem('session_token');
+    if (token) {
+      const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
+      const pageRequest = { filter: filter, pageNum: dataTable.pageNum };
+      let formData = new FormData();
+      formData.append('csrfToken', token);
+      formData.append('pageRequest', JSON.stringify(pageRequest));
+      const data = await request(url, 'POST', formData);
+      dispatch(getData(data));
+    } else {
+      console.error('no token');
+    }
+  };
 
   const changePageHandler = (pageNum: number) => {
     requestData(pageNum, filter);
@@ -36,19 +35,21 @@ export const Operations = () => {
 
   const filterData = (formData: IFormRequest) => {
     dispatch(saveFormData(formData));
-    requestData(pageNum, formData);
-  }
+    requestData(dataTable.pageNum, formData);
+  };
 
   return (
     <Box p={1}>
-      <Grid container>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <FormOperation getFilteredData={filterData} />
         </Grid>
         <Grid item xs={12}>
           <TableOperation
             getPaginationData={changePageHandler}
-            useHttp={{ loading, request, error, clearError }}
+            loading={loading}
+            error={error}
+            dataTable={dataTable}
           />
         </Grid>
         <Grid style={{ height: '200px' }} item xs={12}>

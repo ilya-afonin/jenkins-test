@@ -1,11 +1,11 @@
-import React, { useState, useEffect, forwardRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, forwardRef } from 'react';
 import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
 import { IOperationReducer, IFormState } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 import { headerConfig } from './config';
+import { useStyles } from './styles';
 import {
   Remove,
   FilterList,
@@ -30,8 +30,10 @@ interface ITableState {
 }
 
 interface ITableOperation {
-  getPaginationData(pageNum: number): void,
-  useHttp: { loading: boolean, request: any, error: any, clearError: any },
+  getPaginationData: (page: number) => void,
+  loading: boolean,
+  error: object | null,
+  dataTable: IStore | {},
 }
 
 /**
@@ -41,24 +43,23 @@ interface ITableOperation {
  * @prop {object} value User info.
  */
 export const TableOperation = (
-  { getPaginationData, useHttp: { loading, request, error, clearError } }: ITableOperation
+  { getPaginationData, loading, error, dataTable }: ITableOperation
 ): JSX.Element => {
   const table: ITableState = {
-    tableOperation: useSelector((state: IStore) => state.operation.tableOperation),
+    tableOperation: dataTable,
     columns: headerConfig,
   };
-  
 
   const [countPage, setCountPage] = useState(0);
-
+  const classes = useStyles();
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: any) => {
       return {
         ...item,
         id: i + 1,
-        opDate: format(+item.opDate, 'dd.MM.yyyy hh.mm.ss'),
-        txnDateTime: format(+item.txnDateTime, 'dd.MM.yyyy hh.mm.ss'),
-        localDateTime: format(+item.localDateTime, 'dd.MM.yyyy hh.mm.ss'),
+        opDate: format(+item.opDate, 'dd.MM.yyyy hh:mm:ss'),
+        txnDateTime: format(+item.txnDateTime, 'dd.MM.yyyy hh:mm:ss'),
+        localDateTime: format(+item.localDateTime, 'dd.MM.yyyy hh:mm:ss'),
       };
     });
   };
@@ -69,6 +70,7 @@ export const TableOperation = (
         Pagination: props => (
           <TablePagination
             {...props}
+            className={classes.pagination}
             rowsPerPage={20}
             count={
               Object.keys(table.tableOperation).length !== 0 ? table.tableOperation.totalTxs : 1
@@ -82,19 +84,30 @@ export const TableOperation = (
         ),
       }}
       localization={{
-        pagination: {},
+        pagination: {
+          firstTooltip: 'Первая страница',
+          previousTooltip: 'Предыдущая страница',
+          nextTooltip: 'Слудующая страница',
+          lastTooltip: 'Последняя страница',
+          labelDisplayedRows: '{from}-{to} из {count}',
+        },
       }}
       options={{
-        maxBodyHeight: '400px',
+        showEmptyDataSourceMessage: false,
+        maxBodyHeight: '350px',
         pageSize: 20,
         pageSizeOptions: [20],
-        draggable: false,
+        draggable: true,
         toolbar: false,
         padding: 'dense',
+        paginationType: 'stepped',
         headerStyle: {
-          fontSize: '12px',
+          fontSize: '10px',
           fontWeight: 'bold',
           lineHeight: 1.2,
+        },
+        rowStyle: {
+          whiteSpace: 'nowrap',
         },
       }}
       isLoading={loading}
