@@ -1,50 +1,72 @@
 //import 'date-fns';
-import React from 'react';
+import React, { FC } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ruLocale from 'date-fns/locale/ru';
+import { parse, format, getTime } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
 import { useStyles } from './styles';
+import { IFormState, IFormRequest } from '../../redux/types/operation.types';
 
-export const FormOperation = ({ getFilteredData }: any) => {
-  const { handleSubmit, reset, control } = useForm();
+interface IFormProps {
+  getFilteredData: (formData: IFormRequest) => void;
+}
+
+export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element => {
   const classes = useStyles();
+  const { handleSubmit, reset, control } = useForm<IFormState>({
+    defaultValues: {
+      dateFrom: new Date(1970, 0, 1, 0, 0, 0, 0),
+      timeFrom: '00:00',
+      dateEnd: new Date().setHours(0, 0, 0, 0),
+      timeEnd: '23:59',
+    },
+  });
+
+  const onSubmit = handleSubmit((data: IFormState) => {
+    const { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
+    const startTimestamp = getTime(
+      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm', new Date())
+    );
+    const endTimestamp = getTime(
+      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm', new Date())
+    );
+    const formData = { ...otherData, startTimestamp, endTimestamp };
+    getFilteredData(formData);
+  });
 
   return (
     <Paper>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
-        <form onSubmit={handleSubmit(getFilteredData)} className={classes.root}>
+        <form onSubmit={onSubmit} className={classes.root} noValidate={true}>
           <Grid container direction="column">
             <Grid item className="formRow">
               <Controller
                 as={DatePicker}
                 name="dateFrom"
                 control={control}
-                value=""
                 initialFocusedDate=""
                 invalidDateMessage="Неправильная дата"
                 maxDateMessage=""
                 minDateMessage=""
                 format="dd.MM.yyyy"
-                // defaultValue={format(new Date(), 'yyyy-MM-dd')}
-                //rules={{ required: "Введите начальную дату" }}
+                rules={{ required: 'Введите начальную дату' }}
                 label="Начальная дата"
                 variant="outlined"
                 margin="dense"
+                inputProps={{ mask:  "__.__.____" }}
               />
               <Controller
                 as={TextField}
                 name="timeFrom"
                 type="time"
-                defaultValue="00:00:00"
-                //rules={{ validate: value => {console.log(value); return 'Введите время начала' }}}
                 control={control}
-                label="Время нач."
+                label="Время"
                 variant="outlined"
                 margin="dense"
                 InputLabelProps={{ shrink: true }}
-                inputProps={{ step: 1 }}
+                inputProps={{ step: 60, autoComplete: 'off', mask:  "__:__" }}
               />
               <Controller
                 as={DatePicker}
@@ -62,15 +84,12 @@ export const FormOperation = ({ getFilteredData }: any) => {
                 as={TextField}
                 name="timeEnd"
                 type="time"
-                // defaultValue={format(new Date(), 'HH:mm:ss')}
-                defaultValue="23:59:59"
-                // rules={{ required: true }}
                 control={control}
-                label="Время кон."
+                label="Время"
                 variant="outlined"
                 margin="dense"
                 InputLabelProps={{ shrink: true }}
-                inputProps={{ step: 1 }}
+                inputProps={{ step: 60, autoComplete: 'off' }}
               />
               <Controller
                 as={TextField}
@@ -96,7 +115,7 @@ export const FormOperation = ({ getFilteredData }: any) => {
               />
               <Controller
                 as={TextField}
-                name="transSum"
+                name="amount"
                 type="number"
                 defaultValue=""
                 control={control}
@@ -106,7 +125,7 @@ export const FormOperation = ({ getFilteredData }: any) => {
               />
               <Controller
                 as={TextField}
-                name="merchant"
+                name="merchantId"
                 defaultValue=""
                 control={control}
                 label="Мерчант"
@@ -115,7 +134,7 @@ export const FormOperation = ({ getFilteredData }: any) => {
               />
               <Controller
                 as={TextField}
-                name="authCode"
+                name="authorizationCode"
                 defaultValue=""
                 control={control}
                 label="Код авторизации"

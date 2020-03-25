@@ -2,7 +2,7 @@ import React, { useState, forwardRef } from 'react';
 import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
-import { IOperationReducer } from '../../redux/types/operation.types';
+import { IOperationReducer, IFormState } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 import { headerConfig } from './config';
 import { useStyles } from './styles';
@@ -49,6 +49,7 @@ export const TableOperation = (
     tableOperation: dataTable,
     columns: headerConfig,
   };
+
   const [countPage, setCountPage] = useState(0);
   const classes = useStyles();
   const renderDataTable = (data: any) => {
@@ -63,7 +64,6 @@ export const TableOperation = (
     });
   };
 
-  console.log(Object.keys(table.tableOperation).length !== 0 ? table.tableOperation.size : 20);
   return (
     <MaterialTable
       components={{
