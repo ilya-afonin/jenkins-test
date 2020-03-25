@@ -1,10 +1,14 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles({
-  table: {
-    marginTop: "55px"
+  pagination: {
+    '& .MuiToolbar-root': {
+      minHeight: '35px',
+      '& .MTablePaginationInner-root-388': {
+        '& span .MuiButtonBase-root': {
+          padding: '2px',
+        },
+      },
+    },
   },
-  root: {
-    fontWeight: 600
-  }
 });

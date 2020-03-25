@@ -12,7 +12,6 @@ export const Operations = () => {
 
   const requestData = async (pageNum: number, body = null) => {
     const token = await sessionStorage.getItem('session_token');
-    console.log(body)
     if (token) {
       const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
       const pageNumber = { pageNum: pageNum };
@@ -33,14 +32,16 @@ export const Operations = () => {
 
   return (
     <Box p={1}>
-      <Grid container>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <FormOperation getFilteredData={requestData} />
         </Grid>
         <Grid item xs={12}>
           <TableOperation
             getPaginationData={handleChangePage}
-            useHttp={{ loading, request, error, clearError }}
+            loading={loading}
+            error={error}
+            dataTable={dataTable}
           />
         </Grid>
         <Grid style={{ height: '200px' }} item xs={12}>
