@@ -52,6 +52,7 @@ export interface IFormRequest {
   endTimestamp?: number,
 }
 
+// Reducer page operation
 export interface IOperationReducer {
   tableOperation: IPagination | {},
   formOperation: IFormState | {},
@@ -64,6 +65,7 @@ export interface IPagination {
   totalTxs?: number,
 }
 
+// Данные приходящие по запросу.
 export interface ITransactionDetails {
   transactionId?: number,
   operationType?: number,
@@ -83,6 +85,53 @@ export interface ITransactionDetails {
   country?: number | string,
   postalCode?: number | string,
   fraudRuleNumber?: number | string,
+  fraudRuleName?: string,
+  fraudComment?: string,
+}
+
+// Составные данные для детального отображениея.
+export interface IDetailData {
+  transactionId?: number,
+  pan?: number,
+  expdate?: number,
+  tokenized?: boolean,
+  tokenNumber?: number,
+  transactionType?: number,
+  operationType?: number,
+  categoryCode?: number,
+  status?: number,
+  rrn?: string,
+  stan?: number,
+  amount?: number,
+  currencyCode?: number,
+  feeType?: number,
+  feeAmount?: number,
+  totalAmount?: number,
+  cardCurrency?: number,
+  conversionRate?: number,
+  conversionExp?: number,
+  opDate?: number,
+  txnDateTime?: number,
+  localDateTime?: number | string,
+  mti?: number,
+  networkId?: number,
+  issInst?: number,
+  acquirerInstitute?: number,
+  merchantId?: string,
+  mcc?: number,
+  merchantAddress?: string,
+  merchantCity?: string,
+  country?: string,
+  postalCode?: string,
+  terminalId: string,
+  terminalType: number,
+  posDataCode: string,
+  panEntryMode: number,
+  authorizationCode: null | any,
+  internalResponseCode: number,
+  hostResponseCode: null | any,
+  fraudVerdict: null | any,
+  fraudRuleNumber?: string,
   fraudRuleName?: string,
   fraudComment?: string,
 }
