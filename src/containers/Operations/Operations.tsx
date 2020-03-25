@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Box } from '@material-ui/core';
 import { getData, saveFormData, getDetail } from '../../redux/action/operation.action';
 import TableOperation from '../../components/TableOperation';
-import { IPagination, IFormRequest } from '../../redux/types/operation.types';
+import { IPagination, IFormRequest, IPaginationData } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 
 export const Operations = () => {
@@ -13,19 +13,8 @@ export const Operations = () => {
   const dispatch = useDispatch();
   const filter: IFormRequest = useSelector((state: IStore) => state.operation.formOperation);
   const dataTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
-  const transaction = useSelector((state: IStore) => state.operation.tableDetails);
-
-  //TODO: Тестовый вызов детальной информации в консоль. Урать.
-  useEffect(
-    () => {
-      const asyncFetch = async (): Promise<void> => {
-        requestDataDetails(1050801584452534000);
-      };
-      asyncFetch();
-    },
-    []
-  );
-  console.log(transaction);
+  // TODO: tableDetails сюда кладется информация о строке на которую кликнули.
+  const tableDetails = useSelector((state: IStore) => state.operation.tableDetails);
 
   const requestData = async (pageNum = 0, filter: IFormRequest | null): Promise<void> => {
     const token = await sessionStorage.getItem('session_token');
@@ -49,7 +38,7 @@ export const Operations = () => {
       const transactionDetailRequest = { transactionId: transactionId };
       let formData = new FormData();
       formData.append('csrfToken', token);
-      formData.append('pageRequest', JSON.stringify(transactionDetailRequest));
+      formData.append('transactionDetailRequest', JSON.stringify(transactionDetailRequest));
       const data = await request(url, 'POST', formData);
       dispatch(getDetail(data));
     } else {
@@ -57,13 +46,17 @@ export const Operations = () => {
     }
   };
 
-  const changePageHandler = (pageNum: number) => {
+  const changePageHandler = (pageNum: number): void => {
     requestData(pageNum, filter);
   };
 
-  const filterData = (formData: IFormRequest) => {
+  const filterData = (formData: IFormRequest): void => {
     dispatch(saveFormData(formData));
     requestData(dataTable.pageNum, formData);
+  };
+
+  const onRowClick = (event: Event, row: IPaginationData): void => {
+    requestDataDetails(+row.transactionId);
   };
 
   return (
@@ -78,6 +71,7 @@ export const Operations = () => {
             loading={loading}
             error={error}
             dataTable={dataTable}
+            onRowClick={onRowClick}
           />
         </Grid>
         <Grid style={{ height: '200px' }} item xs={12}>

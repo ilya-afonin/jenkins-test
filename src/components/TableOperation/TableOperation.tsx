@@ -2,7 +2,7 @@ import React, { useState, forwardRef } from 'react';
 import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
-import { IOperationReducer, IFormState } from '../../redux/types/operation.types';
+import { IOperationReducer, IPaginationData } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 import { headerConfig } from './config';
 import { useStyles } from './styles';
@@ -31,9 +31,10 @@ interface ITableState {
 
 interface ITableOperation {
   getPaginationData: (page: number) => void,
-  loading: boolean,
-  error: object | null,
+  loading?: boolean,
+  error?: object | null,
   dataTable: IStore | {},
+  onRowClick: any,
 }
 
 /**
@@ -43,7 +44,7 @@ interface ITableOperation {
  * @prop {object} value User info.
  */
 export const TableOperation = (
-  { getPaginationData, loading, error, dataTable }: ITableOperation
+  { getPaginationData, loading, error, dataTable, onRowClick }: ITableOperation
 ): JSX.Element => {
   const table: ITableState = {
     tableOperation: dataTable,
@@ -66,6 +67,7 @@ export const TableOperation = (
 
   return (
     <MaterialTable
+      onRowClick={onRowClick}
       components={{
         Pagination: props => (
           <TablePagination
