@@ -95,6 +95,7 @@ export const TableOperation = (
         },
       }}
       options={{
+        doubleHorizontalScroll: true,
         showEmptyDataSourceMessage: false,
         maxBodyHeight: '350px',
         pageSize: 20,
