@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHttp } from '../../hooks/http.hook';
 import FormOperation from '../../components/FormOperation';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Box } from '@material-ui/core';
 import { getData, saveFormData, getDetail } from '../../redux/action/operation.action';
 import TableOperation from '../../components/TableOperation';
-import { IPagination, IFormRequest, IPaginationData } from '../../redux/types/operation.types';
+import {
+  IPagination,
+  IFormRequest,
+  IPaginationData,
+  IDetailData,
+} from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 
 export const Operations = () => {
@@ -20,7 +25,7 @@ export const Operations = () => {
     const token = await sessionStorage.getItem('session_token');
     if (token) {
       const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
-      const pageRequest = { filter: filter, pageNum: dataTable.pageNum };
+      const pageRequest = { filter: filter, pageNum: pageNum };
       let formData = new FormData();
       formData.append('csrfToken', token);
       formData.append('pageRequest', JSON.stringify(pageRequest));
@@ -31,7 +36,7 @@ export const Operations = () => {
     }
   };
 
-  const requestDataDetails = async (transactionId: number): Promise<void> => {
+  const requestDataDetails = async (transactionId: number): Promise<IPagination | void> => {
     const token = await sessionStorage.getItem('session_token');
     if (token) {
       const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/details`;
@@ -40,23 +45,29 @@ export const Operations = () => {
       formData.append('csrfToken', token);
       formData.append('transactionDetailRequest', JSON.stringify(transactionDetailRequest));
       const data = await request(url, 'POST', formData);
-      dispatch(getDetail(data));
+      return data;
     } else {
       console.error('no token');
     }
   };
 
   const changePageHandler = (pageNum: number): void => {
+    console.log(pageNum);
     requestData(pageNum, filter);
   };
 
-  const filterData = (formData: IFormRequest): void => {
+  const filterData = (formData: IFormRequest) => {
     dispatch(saveFormData(formData));
     requestData(dataTable.pageNum, formData);
   };
 
-  const onRowClick = (event: Event, row: IPaginationData): void => {
-    requestDataDetails(+row.transactionId);
+  const onRowClick = async (event: Event, row: IPaginationData): Promise<void> => {
+    const data: any = await requestDataDetails(+row.transactionId);
+    const uniteData: IDetailData = {
+      ...data,
+      ...row,
+    };
+    dispatch(getDetail(uniteData));
   };
 
   return (
