@@ -67,8 +67,6 @@ export const TableOperation = (
     [dataTable]
   );
 
-  useEffect(() => {}, []);
-
   // Формирование данных для таблицы.
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: number) => {
