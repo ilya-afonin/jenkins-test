@@ -52,13 +52,12 @@ export const Operations = () => {
   };
 
   const changePageHandler = (pageNum: number): void => {
-    console.log(pageNum);
     requestData(pageNum, filter);
   };
 
   const filterData = (formData: IFormRequest) => {
     dispatch(saveFormData(formData));
-    requestData(dataTable.pageNum, formData);
+    requestData(0, formData);
   };
 
   const onRowClick = async (event: Event, row: IPaginationData): Promise<void> => {

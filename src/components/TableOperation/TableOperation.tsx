@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
@@ -53,8 +53,23 @@ export const TableOperation = (
 
   const [countPage, setCountPage] = useState(0);
   const classes = useStyles();
+
+  useEffect(
+    () => {
+      if (Object.keys(table.tableOperation).length !== 0) {
+        if (table.tableOperation.pageNum === 0) {
+          setCountPage(0);
+        } else {
+          setCountPage(table.tableOperation.pageNum);
+        }
+      }
+    },
+    [dataTable]
+  );
+
+  // Формирование данных для таблицы.
   const renderDataTable = (data: any) => {
-    return data.map((item: any, i: any) => {
+    return data.map((item: any, i: number) => {
       return {
         ...item,
         id: i + 1,
@@ -96,14 +111,16 @@ export const TableOperation = (
       }}
       options={{
         doubleHorizontalScroll: true,
+        emptyRowsWhenPaging: false,
         showEmptyDataSourceMessage: false,
-        maxBodyHeight: '350px',
+        maxBodyHeight: 350,
+        minBodyHeight: 350,
         pageSize: 20,
         pageSizeOptions: [20],
-        draggable: true,
+        draggable: false,
         toolbar: false,
         padding: 'dense',
-        paginationType: 'stepped',
+        paginationType: 'normal',
         headerStyle: {
           fontSize: '10px',
           fontWeight: 'bold',
