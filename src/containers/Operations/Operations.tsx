@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Box } from '@material-ui/core';
 import { getData, saveFormData, getDetail } from '../../redux/action/operation.action';
 import TableOperation from '../../components/TableOperation';
+import DetailOperation from '../../components/DetailOperation';
 import {
   IPagination,
   IFormRequest,
@@ -13,13 +14,13 @@ import {
 } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 
-export const Operations = () => {
+export const Operations: React.FC = (): JSX.Element => {
   const { loading, request, error, clearError } = useHttp();
   const dispatch = useDispatch();
   const filter: IFormRequest = useSelector((state: IStore) => state.operation.formOperation);
   const dataTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
   // TODO: tableDetails сюда кладется информация о строке на которую кликнули.
-  const tableDetails = useSelector((state: IStore) => state.operation.tableDetails);
+  const tableDetails: IDetailData = useSelector((state: IStore) => state.operation.tableDetails);
 
   const requestData = async (pageNum = 0, filter: IFormRequest | null): Promise<void> => {
     const token = await sessionStorage.getItem('session_token');
@@ -84,8 +85,8 @@ export const Operations = () => {
             onRowClick={onRowClick}
           />
         </Grid>
-        <Grid style={{ height: '200px' }} item xs={12}>
-          <div className="Detail" />
+        <Grid item xs={12}>
+          <DetailOperation dataDetail={tableDetails} />
         </Grid>
       </Grid>
     </Box>
