@@ -2,13 +2,9 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    //width: '100%',
     padding: '5px',
     '& .MuiTextField-root': {
-      // display: "flex",
-      // flexFlow: "column nowrap",
-      margin: theme.spacing(1),
-      //width: 200,
+      margin: theme.spacing(1)
     },
     '& .formActions': {
       display: 'flex',

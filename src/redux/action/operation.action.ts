@@ -1,4 +1,4 @@
-import { IFormRequest, IPagination, ITransactionDetails } from './../types/operation.types';
+import { IFormRequest, IPagination, IDetailData } from './../types/operation.types';
 import { action } from 'typesafe-actions';
 import { Constants } from '../consts/operation.const';
 
@@ -15,7 +15,7 @@ export function saveFormData(formData: IFormRequest) {
   });
 }
 
-export function getDetail(data: ITransactionDetails) {
+export function getDetail(data: IDetailData) {
   return action(Constants.GET_TABLE_DETAILS, {
     data,
   });
