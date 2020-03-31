@@ -17,7 +17,7 @@ export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element 
   const classes = useStyles();
   const { handleSubmit, reset, control } = useForm<IFormState>({
     defaultValues: {
-      dateFrom: new Date(1970, 0, 1, 0, 0, 0, 0),
+      dateFrom: new Date().setHours(0, 0, 0, 0),
       timeFrom: '00:00',
       dateEnd: new Date().setHours(0, 0, 0, 0),
       timeEnd: '23:59',
@@ -51,11 +51,9 @@ export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element 
                 maxDateMessage=""
                 minDateMessage=""
                 format="dd.MM.yyyy"
-                rules={{ required: 'Введите начальную дату' }}
                 label="Начальная дата"
                 variant="outlined"
                 margin="dense"
-                inputProps={{ mask:  "__.__.____" }}
               />
               <Controller
                 as={TextField}

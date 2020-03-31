@@ -18,19 +18,20 @@ const TabProps = (index: any) => {
 export const DetailOperation: FC<IDetailProps> = ({ dataDetail }): JSX.Element => {
   const classes = useStyles();
   const [tabIndex, setActive] = useState(0);
+  const [tokenized, setTokenized] = useState(dataDetail.tokenized || false);
 
   const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
     setActive(newIndex);
   };
-
+  
   const renderColumns = (): Array<JSX.Element> => {
     const keys: string[] = Object.keys(detailConfig);
     return keys.map((key: string) => (
-      <Grid item className={classes.column} key={key}>
+      <Grid item className={classes.card} key={key}>
         {detailConfig[key].map((column: any, i: any) => {
           if (column instanceof Array) {
             return (
-              <div>
+              <div key={i}>
                 {column.map(({ title, field }, idx: number) => {
                   return (
                     <dl key={idx}>
@@ -44,7 +45,8 @@ export const DetailOperation: FC<IDetailProps> = ({ dataDetail }): JSX.Element =
           } else {
             let value = dataDetail[column.field];
             if (column.field === 'tokenized') {
-              value = <Checkbox disabled checked={dataDetail[column.field]} />;
+              console.log(tokenized);
+              value = <Checkbox disabled checked={tokenized} size="small"/>;
             }
             return (
               <dl key={i}>

@@ -3,19 +3,33 @@ import { Tabs, Tab } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
 import styled from 'styled-components';
 
+export const StyledTabs = styled(Tabs)`
+  border-bottom: 1px solid #c6c6c6;
+`;
+
+export const StyledTab = styled(Tab)`
+  font-weight: 600;
+  text-transform: none;
+`;
+
+export const StyledTabPanel = styled(TabPanel)`
+  min-height: 185px;
+`;
+
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(0, auto))',
-    gridGap: '0 20px',
-    height: "100%",
-    overflow: 'auto',
+    // display: 'grid',
+    // gridTemplateColumns: 'repeat(auto-fit, minmax(0, auto))',
+    // gridGap: '0 20px',
+    display: 'flex',
+    flexFlow: 'row wrap'
   },
 
-  column: {
+  card: {
     backgroundColor: '#f9f9f9',
-    padding: '8px 10px',
+    padding: '6px 10px',
     border: '1px solid #046a383b',
+    marginRight: '20px',
     '& > div': {
       width: '48%',
       float: 'left',
@@ -28,8 +42,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
       gridTemplateColumns: "1fr auto",
       alignItems: 'center',
       margin: "0",
-      fontSize: '14px',
-      lineHeight: 1.4
+      lineHeight: 1.4,
+      fontSize: '0.75rem'
     },
     '& dt ': {
       fontWeight: 600,
@@ -44,16 +58,3 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     }
   }
 }))
-
-export const StyledTabs = styled(Tabs)`
-  border-bottom: 1px solid #c6c6c6;
-`;
-
-export const StyledTab = styled(Tab)`
-  font-weight: 600;
-  text-transform: none;
-`;
-
-export const StyledTabPanel = styled(TabPanel)`
-  min-height: 230px;
-`;
