@@ -4,8 +4,11 @@ export const useStyles = makeStyles({
   pagination: {
     '& .MuiToolbar-root': {
       minHeight: '35px',
+      justifyContent: 'center',
+      '& .MuiTablePagination-spacer': {
+        flex: 0,
+      },
       '& .MTablePaginationInner-root-388': {
-        paddingRight: '15px',
         '& span .MuiButtonBase-root': {
           padding: '2px',
         },
