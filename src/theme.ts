@@ -4,6 +4,7 @@ import { ruRU } from '@material-ui/core/locale';
 import { EMainColorThem } from "./common/Enums/Enums";
 
 export const mainTheme: Theme = createMuiTheme({
+  spacing: 5,
   borderRadius: '2px',
   palette: {
     primary: {
@@ -14,6 +15,7 @@ export const mainTheme: Theme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'].join(', ')
+    fontFamily: ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'].join(', '),
+    fontSize: 13
   }
 }, ruRU);

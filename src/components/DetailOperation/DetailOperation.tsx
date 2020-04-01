@@ -1,6 +1,8 @@
 //import 'date-fns';
-import React, { FC, useState } from 'react';
-import { Grid, Paper, Checkbox } from '@material-ui/core';
+import React, { FC, useState, useEffect, useRef } from 'react';
+import { Grid, Paper } from '@material-ui/core';
+import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import { useStyles, StyledTabs, StyledTab, StyledTabPanel } from './styles';
 import { detailConfig } from './config';
 
@@ -26,11 +28,11 @@ export const DetailOperation: FC<IDetailProps> = ({ dataDetail }): JSX.Element =
   const renderColumns = (): Array<JSX.Element> => {
     const keys: string[] = Object.keys(detailConfig);
     return keys.map((key: string) => (
-      <Grid item className={classes.column} key={key}>
+      <Grid item className={classes.card} key={key}>
         {detailConfig[key].map((column: any, i: any) => {
           if (column instanceof Array) {
             return (
-              <div>
+              <div key={i}>
                 {column.map(({ title, field }, idx: number) => {
                   return (
                     <dl key={idx}>
@@ -44,7 +46,11 @@ export const DetailOperation: FC<IDetailProps> = ({ dataDetail }): JSX.Element =
           } else {
             let value = dataDetail[column.field];
             if (column.field === 'tokenized') {
-              value = <Checkbox disabled checked={dataDetail[column.field]} />;
+              value = dataDetail[column.field] ? (
+                <CheckBoxOutlinedIcon fontSize="small" />
+              ) : (
+                <CheckBoxOutlineBlankOutlinedIcon fontSize="small" />
+              );
             }
             return (
               <dl key={i}>

@@ -2,7 +2,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    padding: '5px',
+    padding: '8px 5px',
     '& .MuiTextField-root': {
       margin: theme.spacing(1)
     },
@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
       flexFlow: 'row nowrap',
     },
     '& .formActions button': {
-      margin: '8px'
+      margin: theme.spacing(1)
     }
   },
 }))
