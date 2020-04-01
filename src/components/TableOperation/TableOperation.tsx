@@ -67,19 +67,53 @@ export const TableOperation = (
     [dataTable]
   );
 
+  // Преобразуем дату и время к нормальному виду.
+  const toolsDate = (date: number): string => {
+    const enrichZeroDate = date.toString().length < 10 ? `0${date}` : `${date}`;
+    const month = enrichZeroDate.slice(0, 2);
+    const day = enrichZeroDate.slice(2, 4);
+    const hour = enrichZeroDate.slice(4, 6);
+    const minute = enrichZeroDate.slice(6, 8);
+    const second = enrichZeroDate.slice(8, 10);
+    return `${day}.${month} ${hour}:${minute}:${second}`;
+  }
+
+  // Преобразуем системные дату и время к нормальному виду.
+  const toolsDateSystem = (date: number): string => {
+    const year = date.toString().slice(0, 4);
+    const month = date.toString().slice(4, 6);
+    const day = date.toString().slice(6, 8);
+    const hour = date.toString().slice(8, 10);
+    const minute = date.toString().slice(10, 12);
+    const second = date.toString().slice(12, 14);
+    return `${day}.${month}.${year} ${hour}:${minute}:${second}`;
+  }
+
+  const mccMatchNumber = (mcc: number) => {
+    const length = mcc.toString().length;
+    switch (length) {
+      case 1: return `000${mcc}`
+      case 2: return `00${mcc}`
+      case 3: return `0${mcc}`
+      case 4: return `${mcc}`
+      default:
+        break;
+    }
+  }
+
   // Формирование данных для таблицы.
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: number) => {
       return {
         ...item,
         id: i + 1,
-        opDate: format(+item.opDate, 'dd.MM.yyyy hh:mm:ss'),
-        txnDateTime: format(+item.txnDateTime, 'dd.MM.yyyy hh:mm:ss'),
-        localDateTime: format(+item.localDateTime, 'dd.MM.yyyy hh:mm:ss'),
+        mcc: mccMatchNumber(+item.mcc),
+        opDate: toolsDateSystem(+item.opDate),
+        txnDateTime: toolsDate(+item.txnDateTime),
+        localDateTime: toolsDate(+item.localDateTime),
       };
     });
   };
-
   return (
     <MaterialTable
       onRowClick={onRowClick}
