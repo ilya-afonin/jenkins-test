@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ruLocale from 'date-fns/locale/ru';
-import { parse, format, getTime } from 'date-fns';
+import { parse, format, getUnixTime } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
@@ -15,26 +15,38 @@ interface IFormProps {
 
 export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element => {
   const classes = useStyles();
-  const { handleSubmit, reset, control } = useForm<IFormState>({
+  const { handleSubmit, reset, control, setValue } = useForm<IFormState>({
     defaultValues: {
       dateFrom: new Date().setHours(0, 0, 0, 0),
-      timeFrom: '00:00',
+      timeFrom: '00:00:00',
       dateEnd: new Date().setHours(0, 0, 0, 0),
-      timeEnd: '23:59',
+      timeEnd: '23:59:59',
     },
   });
 
   const onSubmit = handleSubmit((data: IFormState) => {
     const { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
-    const startTimestamp = getTime(
-      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm', new Date())
+
+    const startTimestamp = getUnixTime(
+      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
     );
-    const endTimestamp = getTime(
-      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm', new Date())
+    const endTimestamp = getUnixTime(
+      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm:ss', new Date())
     );
     const formData = { ...otherData, startTimestamp, endTimestamp };
     getFilteredData(formData);
   });
+
+  //Добавление секунд при отправке
+  const handleChangeTime = ([event]: any) => {
+    let time = event.target.value;
+
+    if (time.length < 6) {
+      // missing :ss on chrome
+       time += ':00';
+    }
+    return time;
+  };
 
   return (
     <Paper>
@@ -64,7 +76,9 @@ export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element 
                 variant="outlined"
                 margin="dense"
                 InputLabelProps={{ shrink: true }}
-                inputProps={{ step: 60, autoComplete: 'off', mask:  "__:__" }}
+                inputProps={{ step: 1, autoComplete: 'off', mask: '__:__:__' }}
+                onChange={handleChangeTime}
+                defaultValue=""
               />
               <Controller
                 as={DatePicker}
@@ -87,7 +101,9 @@ export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element 
                 variant="outlined"
                 margin="dense"
                 InputLabelProps={{ shrink: true }}
-                inputProps={{ step: 60, autoComplete: 'off' }}
+                inputProps={{ step: 1, autoComplete: 'off', mask: '__:__:__' }}
+                onChange={handleChangeTime}
+                defaultValue=""
               />
               <Controller
                 as={TextField}
