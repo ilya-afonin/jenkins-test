@@ -18,18 +18,18 @@ export const StyledTabPanel = styled(TabPanel)`
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   grid: {
-    // display: 'grid',
-    // gridTemplateColumns: 'repeat(auto-fit, minmax(0, auto))',
-    // gridGap: '0 20px',
-    display: 'flex',
-    flexFlow: 'row wrap'
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(0, auto))',
+    gridGap: '0 6px',
+    // display: 'flex',
+    // flexFlow: 'row wrap'
   },
 
   card: {
     backgroundColor: '#f9f9f9',
     padding: '6px 10px',
     border: '1px solid #046a383b',
-    marginRight: '20px',
+    // marginRight: '20px',
     '& > div': {
       width: '48%',
       float: 'left',
@@ -51,7 +51,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     '& dd': {
       margin: 0,
-      fontWeight: 700
+      fontWeight: 700,
+      display: 'flex'
     },
     '& .MuiCheckbox-root': {
       padding: 0

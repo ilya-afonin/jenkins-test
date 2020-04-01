@@ -72,7 +72,7 @@ export const Operations: React.FC = (): JSX.Element => {
 
   return (
     <Box p={1}>
-      <Grid container direction="column" spacing={1}>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
           <FormOperation getFilteredData={filterData} />
         </Grid>
