@@ -101,12 +101,21 @@ export const TableOperation = (
     }
   }
 
+  // Формирование суммы транзакции.
+  const matchAmountTransaction = (amount: number): number | string => {
+    const divisionAmount: number = amount / 100;
+    if (Number.isInteger(divisionAmount)) {
+      return divisionAmount.toFixed(2);
+    } else { return divisionAmount }
+  }
+
   // Формирование данных для таблицы.
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: number) => {
       return {
         ...item,
         id: i + 1,
+        amount: matchAmountTransaction(item.amount),
         mcc: mccMatchNumber(+item.mcc),
         opDate: toolsDateSystem(+item.opDate),
         txnDateTime: toolsDate(+item.txnDateTime),
