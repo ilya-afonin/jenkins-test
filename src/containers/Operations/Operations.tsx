@@ -8,21 +8,21 @@ import TableOperation from '../../components/TableOperation';
 import DetailOperation from '../../components/DetailOperation';
 import {
   IPagination,
-  IFormRequest,
+  IFormState,
   IPaginationData,
   IDetailData,
 } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
 
 export const Operations: React.FC = (): JSX.Element => {
-  const { loading, request, error, clearError } = useHttp();
+  const { loading, request, error } = useHttp();
   const dispatch = useDispatch();
-  const filter: IFormRequest = useSelector((state: IStore) => state.operation.formOperation);
+  const filter: IFormState = useSelector((state: IStore) => state.operation.formOperation);
   const dataTable: IPagination = useSelector((state: IStore) => state.operation.tableOperation);
   // TODO: tableDetails сюда кладется информация о строке на которую кликнули.
   const tableDetails: IDetailData = useSelector((state: IStore) => state.operation.tableDetails);
 
-  const requestData = async (pageNum = 0, filter: IFormRequest | null): Promise<void> => {
+  const requestData = async (pageNum = 0, filter: IFormState | null): Promise<void> => {
     const token = await sessionStorage.getItem('session_token');
     if (token) {
       const url = `/httpbridge-server/invoke/cpsadminservice/cardTransactionService/all`;
@@ -55,10 +55,13 @@ export const Operations: React.FC = (): JSX.Element => {
   const changePageHandler = (pageNum: number): void => {
     requestData(pageNum, filter);
   };
-
-  const filterData = (formData: IFormRequest) => {
+ 
+  const filterData = (formData: IFormState) => {
     dispatch(saveFormData(formData));
-    requestData(0, formData);
+    let { dateFrom, timeFrom, dateEnd, timeEnd, amount, ...otherData } = formData;
+    if (amount) amount *= 100;
+    const postData = { ...otherData, amount };
+    requestData(0, postData);
   };
 
   const onRowClick = async (event: Event, row: IPaginationData): Promise<void> => {
@@ -74,7 +77,11 @@ export const Operations: React.FC = (): JSX.Element => {
     <Box p={1}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <FormOperation getFilteredData={filterData} />
+          <FormOperation
+            formValues={filter}
+            saveFormData={(data) => dispatch(saveFormData(data))}
+            getFilteredData={filterData}
+          />
         </Grid>
         <Grid item xs={12}>
           <TableOperation
