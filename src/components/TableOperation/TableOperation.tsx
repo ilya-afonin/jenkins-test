@@ -109,12 +109,21 @@ export const TableOperation = (
     } else { return divisionAmount }
   }
 
+  // Формируем правильное отображение срока действия карты 00/00.
+  const conversionExpdate = (expdate: number): string => {
+    const year: string = expdate.toString().slice(0, 2);
+    const month: string = expdate.toString().slice(2, 4);
+    return `${year}/${month}`;
+  }
+
+
   // Формирование данных для таблицы.
   const renderDataTable = (data: any) => {
     return data.map((item: any, i: number) => {
       return {
         ...item,
         id: i + 1,
+        expdate: conversionExpdate(item.expdate),
         amount: matchAmountTransaction(item.amount),
         mcc: mccMatchNumber(+item.mcc),
         opDate: toolsDateSystem(+item.opDate),
