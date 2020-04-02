@@ -3,7 +3,12 @@ import { Constants } from '../consts/operation.const';
 
 const initialState: IOperationReducer = {
   tableOperation: {},
-  formOperation: {},
+  formOperation: {
+    dateFrom: new Date().setHours(0, 0, 0, 0),
+    timeFrom: '00:00:00',
+    dateEnd: new Date().setHours(0, 0, 0, 0),
+    timeEnd: '23:59:59',
+  },
   tableDetails: {},
 };
 

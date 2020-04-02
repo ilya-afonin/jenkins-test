@@ -1,5 +1,5 @@
 //import 'date-fns';
-import React, { FC } from 'react';
+import React, { FC } from 'react'; 
 import { useForm, Controller } from 'react-hook-form';
 import ruLocale from 'date-fns/locale/ru';
 import { parse, format, getUnixTime } from 'date-fns';
@@ -7,43 +7,52 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
 import { useStyles } from './styles';
-import { IFormState, IFormRequest } from '../../redux/types/operation.types';
+import { IFormState } from '../../redux/types/operation.types';
 
 interface IFormProps {
-  getFilteredData: (formData: IFormRequest) => void;
+  formValues: IFormState,
+  saveFormData(data: IFormState): void,
+  getFilteredData: (formData: IFormState) => void;
 }
 
-export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element => {
+export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, saveFormData}): JSX.Element => {
   const classes = useStyles();
-  const { handleSubmit, reset, control, setValue } = useForm<IFormState>({
-    defaultValues: {
-      dateFrom: new Date().setHours(0, 0, 0, 0),
-      timeFrom: '00:00:00',
-      dateEnd: new Date().setHours(0, 0, 0, 0),
-      timeEnd: '23:59:59',
-    },
+
+  React.useEffect(() => {
+    return () => {
+      const data = generateStoreData(getValues());
+      saveFormData(data);
+    };
+  }, []);
+
+  const { handleSubmit, reset, control, getValues } = useForm<IFormState>({
+    defaultValues: formValues,
   });
 
-  const onSubmit = handleSubmit((data: IFormState) => {
-    const { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
-
+  const generateStoreData = (data: IFormState) => {
+    let { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
     const startTimestamp = getUnixTime(
-      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
+      // @ts-ignore: new Date
+      parse(format(+dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
     );
     const endTimestamp = getUnixTime(
+      // @ts-ignore: new Date
       parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm:ss', new Date())
     );
-    const formData = { ...otherData, startTimestamp, endTimestamp };
+    return { dateFrom, timeFrom, dateEnd, timeEnd, startTimestamp, endTimestamp, ...otherData };
+  };
+
+  const onSubmit = handleSubmit((data: IFormState) => {
+    const formData = generateStoreData(data);
     getFilteredData(formData);
   });
 
   //Добавление секунд при отправке
   const handleChangeTime = ([event]: any) => {
     let time = event.target.value;
-
     if (time.length < 6) {
       // missing :ss on chrome
-       time += ':00';
+      time += ':00';
     }
     return time;
   };
@@ -103,7 +112,6 @@ export const FormOperation: FC<IFormProps> = ({ getFilteredData }): JSX.Element 
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ step: 1, autoComplete: 'off', mask: '__:__:__' }}
                 onChange={handleChangeTime}
-                defaultValue=""
               />
               <Controller
                 as={TextField}
