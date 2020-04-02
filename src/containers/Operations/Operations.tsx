@@ -1,11 +1,12 @@
 import React from 'react';
-import { useHttp } from '../../hooks/http.hook';
-import FormOperation from '../../components/FormOperation';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHttp } from '../../hooks/http.hook';
+import { parse, format, getUnixTime } from 'date-fns';
 import { Grid, Box } from '@material-ui/core';
-import { getData, saveFormData, getDetail } from '../../redux/action/operation.action';
+import FormOperation from '../../components/FormOperation';
 import TableOperation from '../../components/TableOperation';
 import DetailOperation from '../../components/DetailOperation';
+import { getData, saveFormData, getDetail } from '../../redux/action/operation.action';
 import {
   IPagination,
   IFormState,
@@ -52,16 +53,26 @@ export const Operations: React.FC = (): JSX.Element => {
     }
   };
 
-  const changePageHandler = (pageNum: number): void => {
-    requestData(pageNum, filter);
+  const generateStoreData = (data: IFormState) => {
+    let { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
+    const startTimestamp = getUnixTime(
+      // @ts-ignore:
+      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
+    );
+    const endTimestamp = getUnixTime(
+      // @ts-ignore:
+      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm:ss', new Date())
+    );
+    return { dateFrom, timeFrom, dateEnd, timeEnd, startTimestamp, endTimestamp, ...otherData };
   };
- 
-  const filterData = (formData: IFormState) => {
+
+  const filterData = (pageNum: number, data: IFormState = filter) => {
+    const formData = generateStoreData(data);
     dispatch(saveFormData(formData));
     let { dateFrom, timeFrom, dateEnd, timeEnd, amount, ...otherData } = formData;
     if (amount) amount *= 100;
     const postData = { ...otherData, amount };
-    requestData(0, postData);
+    requestData(pageNum, postData);
   };
 
   const onRowClick = async (event: Event, row: IPaginationData): Promise<void> => {
@@ -79,13 +90,13 @@ export const Operations: React.FC = (): JSX.Element => {
         <Grid item xs={12}>
           <FormOperation
             formValues={filter}
-            saveFormData={(data) => dispatch(saveFormData(data))}
+            saveFormData={(data) => dispatch(saveFormData(generateStoreData(data)))}
             getFilteredData={filterData}
           />
         </Grid>
         <Grid item xs={12}>
           <TableOperation
-            getPaginationData={changePageHandler}
+            getPaginationData={filterData}
             loading={loading}
             error={error}
             dataTable={dataTable}

@@ -1,8 +1,6 @@
-//import 'date-fns';
 import React, { FC } from 'react'; 
 import { useForm, Controller } from 'react-hook-form';
 import ruLocale from 'date-fns/locale/ru';
-import { parse, format, getUnixTime } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
@@ -12,7 +10,7 @@ import { IFormState } from '../../redux/types/operation.types';
 interface IFormProps {
   formValues: IFormState,
   saveFormData(data: IFormState): void,
-  getFilteredData: (formData: IFormState) => void;
+  getFilteredData: (pageNum: number, formData: IFormState) => void;
 }
 
 export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, saveFormData}): JSX.Element => {
@@ -20,7 +18,7 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
 
   React.useEffect(() => {
     return () => {
-      const data = generateStoreData(getValues());
+      const data = getValues();
       saveFormData(data);
     };
   }, []);
@@ -29,22 +27,8 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
     defaultValues: formValues,
   });
 
-  const generateStoreData = (data: IFormState) => {
-    let { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
-    const startTimestamp = getUnixTime(
-      // @ts-ignore: new Date
-      parse(format(+dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
-    );
-    const endTimestamp = getUnixTime(
-      // @ts-ignore: new Date
-      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm:ss', new Date())
-    );
-    return { dateFrom, timeFrom, dateEnd, timeEnd, startTimestamp, endTimestamp, ...otherData };
-  };
-
   const onSubmit = handleSubmit((data: IFormState) => {
-    const formData = generateStoreData(data);
-    getFilteredData(formData);
+    getFilteredData(0, data);
   });
 
   //Добавление секунд при отправке
