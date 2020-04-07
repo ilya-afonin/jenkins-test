@@ -171,9 +171,13 @@ export const TableOperation = (
           fontWeight: 'bold',
           lineHeight: 1.2,
         },
-        rowStyle: {
-          whiteSpace: 'nowrap',
-        },
+        rowStyle: (rowData, index) => {
+          return index % 2 === 0 ? { whiteSpace: 'nowrap' } :
+            {
+              backgroundColor: '#f5f5f5',
+              whiteSpace: 'nowrap',
+            }
+        }
       }}
       isLoading={loading}
       // onColumnDragged={(e, i) => console.log(e, i)}
