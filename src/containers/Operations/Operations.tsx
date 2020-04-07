@@ -54,16 +54,28 @@ export const Operations: React.FC = (): JSX.Element => {
   };
 
   const generateStoreData = (data: IFormState) => {
-    let { dateFrom, timeFrom, dateEnd, timeEnd, ...otherData } = data;
-    const startTimestamp = getUnixTime(
-      // @ts-ignore:
-      parse(format(dateFrom, 'dd.MM.yyyy') + ' ' + timeFrom, 'dd.MM.yyyy HH:mm:ss', new Date())
-    );
-    const endTimestamp = getUnixTime(
-      // @ts-ignore:
-      parse(format(dateEnd, 'dd.MM.yyyy') + ' ' + timeEnd, 'dd.MM.yyyy HH:mm:ss', new Date())
-    );
-    return { dateFrom, timeFrom, dateEnd, timeEnd, startTimestamp, endTimestamp, ...otherData };
+    let storeData: IFormState = data;
+    if (data.dateFrom) {
+      const startTimestamp = getUnixTime(
+        parse(
+          format(data.dateFrom, 'dd.MM.yyyy') + ' ' + data.timeFrom,
+          'dd.MM.yyyy HH:mm:ss',
+          new Date()
+        )
+      );
+      storeData = { startTimestamp, ...storeData };
+    }
+    if (data.dateEnd) {
+      const endTimestamp = getUnixTime(
+        parse(
+          format(data.dateEnd, 'dd.MM.yyyy') + ' ' + data.timeEnd,
+          'dd.MM.yyyy HH:mm:ss',
+          new Date()
+        )
+      );
+      storeData = { endTimestamp, ...storeData };
+    }
+    return storeData;
   };
 
   const filterData = (pageNum: number, data: IFormState = filter) => {

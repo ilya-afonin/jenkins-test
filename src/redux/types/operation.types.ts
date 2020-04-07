@@ -1,3 +1,5 @@
+import { DeepPartial } from "react-hook-form";
+
 // Данные таблицы
 export interface IPaginationData {
   amount: number,
@@ -29,17 +31,17 @@ export interface IPaginationData {
 
 // Данные формы
 export interface IFormState {
-  dateFrom?: number | Date,
+  dateFrom?: number | null,
   timeFrom?: string,
-  dateEnd?: number | Date,
+  dateEnd?: number | null, 
   timeEnd?: string,
-  rrn?: number,
-  pan?: number,
-  amount?: number,
+  rrn?: number | '',
+  pan?: number | '',
+  amount?: number | '',
   merchantId?: string,
   authorizationCode?: string,
-  startTimestamp?: number,
-  endTimestamp?: number,
+  startTimestamp?: number | null,
+  endTimestamp?: number | null,
 }
 
 // Reducer page operation
