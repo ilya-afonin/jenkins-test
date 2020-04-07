@@ -1,9 +1,7 @@
 import React, { useState, forwardRef, useEffect } from 'react';
-import { format } from 'date-fns';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
-import { IOperationReducer, IPaginationData } from '../../redux/types/operation.types';
-import { IStore } from '../../redux/types/store.types';
+import { IOperationReducer, IPagination } from '../../redux/types/operation.types';
 import { headerConfig } from './config';
 import { useStyles } from './styles';
 import {
@@ -24,43 +22,37 @@ import {
   Edit,
 } from '@material-ui/icons';
 
-interface ITableState {
-  columns: Array<Column<IOperationReducer>>,
-  tableOperation: IOperationReducer[] | any,
-}
-
+/**
+ * Компонент TableOperation, таблица с пагинацией.
+ * @returns {JSX} TableOperation.
+ * @prop {(number)=> void} getPaginationData кэлбэк функция, возвращает номер страницы.
+ * @prop {boolean} loading загрузка таблицы с сервера.
+ * @prop {object | null} error ошибка с сервера.
+ * @prop {Array} dataTable Данные для отрисовки и пагинации таблицыы.
+ * @prop {void} onRowClick Кэлбэк функция при клике на строку, возвращает данные строки.
+ */
 interface ITableOperation {
   getPaginationData: (page: number) => void,
   loading?: boolean,
   error?: object | null,
-  dataTable: IStore | {},
+  dataTable: IPagination,
   onRowClick: any,
 }
 
-/**
- * Компонент TableMain, основная навигация сайта.
- * @returns {JSX} TableMain и элементы навигации.
- * @prop {string} match Параметры роутинга.
- * @prop {object} value User info.
- */
 export const TableOperation = (
   { getPaginationData, loading, error, dataTable, onRowClick }: ITableOperation
 ): JSX.Element => {
-  const table: ITableState = {
-    tableOperation: dataTable,
-    columns: headerConfig,
-  };
 
   const [countPage, setCountPage] = useState(0);
   const classes = useStyles();
 
   useEffect(
     () => {
-      if (Object.keys(table.tableOperation).length !== 0) {
-        if (table.tableOperation.pageNum === 0) {
+      if (dataTable.pageNum !== undefined) {
+        if (dataTable.pageNum === 0) {
           setCountPage(0);
         } else {
-          setCountPage(table.tableOperation.pageNum);
+          setCountPage(dataTable.pageNum);
         }
       }
     },
@@ -132,6 +124,7 @@ export const TableOperation = (
       };
     });
   };
+
   return (
     <MaterialTable
       onRowClick={onRowClick}
@@ -142,7 +135,7 @@ export const TableOperation = (
             className={classes.pagination}
             rowsPerPage={20}
             count={
-              Object.keys(table.tableOperation).length !== 0 ? table.tableOperation.totalTxs : 1
+              error === null && dataTable.totalTxs !== undefined ? dataTable.totalTxs : 1
             }
             page={countPage}
             onChangePage={(e: any, page: number) => {
@@ -169,7 +162,7 @@ export const TableOperation = (
         minBodyHeight: 350,
         pageSize: 20,
         pageSizeOptions: [20],
-        draggable: false,
+        draggable: true,
         toolbar: false,
         padding: 'dense',
         paginationType: 'normal',
@@ -203,9 +196,9 @@ export const TableOperation = (
         ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
       }}
-      columns={table.columns}
+      columns={headerConfig}
       data={renderDataTable(
-        table.tableOperation.data === undefined ? [] : table.tableOperation.data
+        dataTable.data === undefined ? [] : dataTable.data
       )}
     />
   );
