@@ -8,10 +8,8 @@ export const useStyles = makeStyles({
       '& .MuiTablePagination-spacer': {
         flex: 0,
       },
-      '& .MTablePaginationInner-root-388': {
-        '& span .MuiButtonBase-root': {
-          padding: '2px',
-        },
+      '& .MuiButtonBase-root': {
+        padding: '2px',
       },
     },
   },
