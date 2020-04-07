@@ -1,7 +1,7 @@
 import { IOperationReducer } from '../types/operation.types';
 import { Constants } from '../consts/operation.const';
 
-const initialState: IOperationReducer = {
+export const initialState: IOperationReducer = {
   tableOperation: {},
   formOperation: {
     dateFrom: new Date().setHours(0, 0, 0, 0),

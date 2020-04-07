@@ -1,4 +1,4 @@
-import React, { FC } from 'react'; 
+import React, { FC } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ruLocale from 'date-fns/locale/ru';
 import DateFnsUtils from '@date-io/date-fns';
@@ -6,14 +6,19 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { TextField, Button, Grid, Paper } from '@material-ui/core';
 import { useStyles } from './styles';
 import { IFormState } from '../../redux/types/operation.types';
+import { initialState } from '../../redux/reducers/operation.reducer';
 
 interface IFormProps {
-  formValues: IFormState,
-  saveFormData(data: IFormState): void,
+  formValues: IFormState;
+  saveFormData(data: IFormState): void;
   getFilteredData: (pageNum: number, formData: IFormState) => void;
 }
 
-export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, saveFormData}): JSX.Element => {
+export const FormOperation: FC<IFormProps> = ({
+  formValues,
+  getFilteredData,
+  saveFormData,
+}): JSX.Element => {
   const classes = useStyles();
 
   React.useEffect(() => {
@@ -23,7 +28,7 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
     };
   }, []);
 
-  const { handleSubmit, reset, control, getValues } = useForm<IFormState>({
+  const { handleSubmit, reset, control, getValues, setValue } = useForm<IFormState>({
     defaultValues: formValues,
   });
 
@@ -36,7 +41,9 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
     let time = event.target.value;
     if (time.length < 6) {
       // missing :ss on chrome
-      time += ':00';
+      setTimeout(() => {
+        time += ':00';
+      }, 100);
     }
     return time;
   };
@@ -52,13 +59,14 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
                 name="dateFrom"
                 control={control}
                 initialFocusedDate=""
-                invalidDateMessage="Неправильная дата"
-                maxDateMessage=""
-                minDateMessage=""
+                invalidDateMessage=""
+                maxDate=""
+                minDate=""
                 format="dd.MM.yyyy"
                 label="Начальная дата"
                 variant="outlined"
                 margin="dense"
+                defaultValue=""
               />
               <Controller
                 as={TextField}
@@ -77,13 +85,15 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
                 as={DatePicker}
                 name="dateEnd"
                 control={control}
-                invalidDateMessage="Неправильная дата"
-                maxDateMessage=""
-                minDateMessage=""
+                initialFocusedDate=""
+                invalidDateMessage=""
+                maxDate=""
+                minDate="" 
                 format="dd.MM.yyyy"
                 label="Конечная дата"
                 variant="outlined"
                 margin="dense"
+                defaultValue=""
               />
               <Controller
                 as={TextField}
@@ -157,13 +167,27 @@ export const FormOperation: FC<IFormProps> = ({ formValues, getFilteredData, sav
               variant="contained"
               type="button"
               onClick={() => {
-                console.log('reset');
-                reset({ dateFrom: undefined });
+                reset({
+                  ...initialState.formOperation,
+                  rrn: '',
+                  pan: '',
+                  amount: '',
+                  merchantId: '',
+                  authorizationCode: '',
+                });
               }}
             >
               Сбросить
             </Button>
-            <Button variant="contained" type="reset">
+            <Button variant="contained" type="button"
+            onClick={() => {
+              reset({
+                dateFrom: null,
+                timeFrom: '',
+                dateEnd: null,
+                timeEnd: ''
+              });
+            }}>
               Сбросить Даты
             </Button>
           </div>
