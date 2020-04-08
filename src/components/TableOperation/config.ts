@@ -3,6 +3,7 @@ export const headerConfig = [
   { title: 'TXN_ID', field: 'transactionId' },
   { title: 'Карта', field: 'pan' },
   { title: 'Срок действия', field: 'expdate' },
+  { title: 'Статус', field: 'hostResponseCodeStatus' },
   { title: 'Тип транзакции', field: 'transactionType' },
   { title: 'RRN', field: 'rrn' },
   { title: 'STAN', field: 'stan' },

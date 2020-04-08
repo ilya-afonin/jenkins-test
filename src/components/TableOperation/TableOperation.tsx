@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useEffect } from 'react';
 import MaterialTable, { Column } from 'material-table';
 import { TablePagination } from '@material-ui/core';
-import { IOperationReducer, IPagination } from '../../redux/types/operation.types';
+import { IPagination } from '../../redux/types/operation.types';
 import { headerConfig } from './config';
 import { useStyles } from './styles';
 import {
@@ -121,9 +121,35 @@ export const TableOperation = (
         opDate: toolsDateSystem(+item.opDate),
         txnDateTime: toolsDate(+item.txnDateTime),
         localDateTime: toolsDate(+item.localDateTime),
+        hostResponseCodeStatus: checkHostResponseCode(item.hostResponseCode)
       };
     });
   };
+
+  // Преобразование колонок таблицы.
+  const renderColumns = (column: Array<Column<any>>) => {
+    return column.map((item) => {
+      if (item.field === 'hostResponseCodeStatus') {
+        return {
+          ...item,
+          cellStyle: (cellData: any, rowData: any) => {
+            if (rowData.hostResponseCodeStatus === 'OK') {
+              return { backgroundColor: 'rgba(0, 255, 98, .3)' };
+            } else { return { backgroundColor: 'rgba(255, 0, 0, .3)' } };
+          }
+        }
+      } else { return { ...item } }
+    })
+  }
+
+  //Проверка статуса ответа хоста.
+  const checkHostResponseCode = (resCode: any) => {
+    const hostResCode = `${resCode}`;
+    const result = (hostResCode === '0' ||
+      hostResCode === '10' ||
+      hostResCode === '87') ? 'OK' : 'FAIL';
+    return result;
+  }
 
   return (
     <MaterialTable
@@ -177,7 +203,7 @@ export const TableOperation = (
               backgroundColor: '#f5f5f5',
               whiteSpace: 'nowrap',
             }
-        }
+        },
       }}
       isLoading={loading}
       // onColumnDragged={(e, i) => console.log(e, i)}
@@ -200,7 +226,7 @@ export const TableOperation = (
         ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
       }}
-      columns={headerConfig}
+      columns={renderColumns(headerConfig)}
       data={renderDataTable(
         dataTable.data === undefined ? [] : dataTable.data
       )}
