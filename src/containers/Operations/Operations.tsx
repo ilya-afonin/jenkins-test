@@ -14,6 +14,7 @@ import {
   IDetailData,
 } from '../../redux/types/operation.types';
 import { IStore } from '../../redux/types/store.types';
+import { StyledFixedGrid } from './styles';
 
 export const Operations: React.FC = (): JSX.Element => {
   const { loading, request, error } = useHttp();
@@ -99,13 +100,13 @@ export const Operations: React.FC = (): JSX.Element => {
   return (
     <Box p={1}>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <StyledFixedGrid item xs={12}>
           <FormOperation
             formValues={filter}
             saveFormData={(data) => dispatch(saveFormData(generateStoreData(data)))}
             getFilteredData={filterData}
           />
-        </Grid>
+        </StyledFixedGrid>
         <Grid item xs={12}>
           <TableOperation
             getPaginationData={filterData}
