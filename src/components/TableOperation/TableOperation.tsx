@@ -4,6 +4,7 @@ import { TablePagination } from '@material-ui/core';
 import { IPagination } from '../../redux/types/operation.types';
 import { headerConfig } from './config';
 import { useStyles } from './styles';
+import { EMainColorThem } from '../../common/Enums/Enums';
 import {
   Remove,
   FilterList,
@@ -134,8 +135,8 @@ export const TableOperation = (
           ...item,
           cellStyle: (cellData: any, rowData: any) => {
             if (rowData.hostResponseCodeStatus === 'OK') {
-              return { backgroundColor: 'rgba(0, 255, 98, .3)' };
-            } else { return { backgroundColor: 'rgba(255, 0, 0, .3)' } };
+              return { backgroundColor: EMainColorThem.statusOk };
+            } else { return { backgroundColor: EMainColorThem.statusFail } }
           }
         }
       } else { return { ...item } }
