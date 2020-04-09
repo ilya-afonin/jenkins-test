@@ -64,7 +64,7 @@ export const Operations: React.FC = (): JSX.Element => {
           new Date()
         )
       );
-      storeData = { startTimestamp, ...storeData };
+      storeData = { ...storeData, startTimestamp };
     }
     if (data.dateEnd) {
       const endTimestamp = getUnixTime(
@@ -74,7 +74,7 @@ export const Operations: React.FC = (): JSX.Element => {
           new Date()
         )
       );
-      storeData = { endTimestamp, ...storeData };
+      storeData = { ...storeData, endTimestamp };
     }
     return storeData;
   };
