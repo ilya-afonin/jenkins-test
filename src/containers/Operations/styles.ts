@@ -4,5 +4,5 @@ import styled from 'styled-components'
 export const StyledFixedGrid = styled(Grid)`
   position: sticky;
   z-index: 100;
-  top: 53px;
+  top: 50px;
 `;

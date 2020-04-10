@@ -28,7 +28,7 @@ export const FormOperation: FC<IFormProps> = ({
     };
   }, []);
 
-  const { handleSubmit, reset, control, getValues, setValue } = useForm<IFormState>({
+  const { handleSubmit, reset, control, getValues } = useForm<IFormState>({
     defaultValues: formValues,
   });
 
@@ -48,6 +48,13 @@ export const FormOperation: FC<IFormProps> = ({
     return time;
   };
 
+  const handleChangeDate = ([newDate]: any) => {
+    let date = newDate;
+    if(newDate)
+      date = newDate.setHours(0,0,0,0);
+    return date;
+  }
+
   return (
     <Paper>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
@@ -60,13 +67,12 @@ export const FormOperation: FC<IFormProps> = ({
                 control={control}
                 initialFocusedDate=""
                 invalidDateMessage=""
-                maxDate=""
-                minDate=""
                 format="dd.MM.yyyy"
                 label="Начальная дата"
                 variant="outlined"
                 margin="dense"
                 defaultValue=""
+                onChange={handleChangeDate}
               />
               <Controller
                 as={TextField}
@@ -87,13 +93,12 @@ export const FormOperation: FC<IFormProps> = ({
                 control={control}
                 initialFocusedDate=""
                 invalidDateMessage=""
-                maxDate=""
-                minDate="" 
                 format="dd.MM.yyyy"
                 label="Конечная дата"
                 variant="outlined"
                 margin="dense"
                 defaultValue=""
+                onChange={handleChangeDate}
               />
               <Controller
                 as={TextField}
@@ -183,9 +188,9 @@ export const FormOperation: FC<IFormProps> = ({
             onClick={() => {
               reset({
                 dateFrom: null,
-                timeFrom: '',
+                timeFrom: '00:00:00',
                 dateEnd: null,
-                timeEnd: ''
+                timeEnd: '23:59:59'
               });
             }}>
               Сбросить Даты
