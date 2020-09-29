@@ -1,6 +1,3 @@
-Web Monitoring Transactions CPS (New Card Processing System)
-Веб-мониторинг транзакций CPS
-
 ## Доступные скрипты
 
 В каталоге проекта вы можете запустить:
