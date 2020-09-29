@@ -32,7 +32,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:fix": "eslint './src/**/*.{ts,tsx}'"
+    "lint:fix": "eslint './src/**/*.{ts,tsx}'",
+    "coverage:dev": "react-scripts test --coverage --coverageDirectory=output/coverage/jest --watchAll",
+    "coverage:prod": "react-scripts test --coverage --coverageDirectory=output/coverage/jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,6 +66,21 @@
     "eslint-plugin-sonarjs": "^0.5.0",
     "prettier": "^0.20.0",
     "typesafe-actions": "^5.1.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!coverage/**",
+      "!node_modules/**",
+      "!src/index.js",
+      "!src/setupTests.js",
+      "!public/**",
+      "!build/**"
+    ],
+    "coverageReporters": [
+      "text",
+      "html"
+    ]
   },
   "proxy": "http://localhost:3001"
 }
