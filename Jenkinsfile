@@ -38,19 +38,19 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS'
-        }
-      }
-      steps {
-        script {
-          def server = Artifactory.server 'My_Artifactory'
-          uploadArtifact(server)
-        }
-      }
-    }
+    // stage('Deploy') {
+    //   when {
+    //     expression {
+    //       currentBuild.result == null || currentBuild.result == 'SUCCESS'
+    //     }
+    //   }
+    //   steps {
+    //     script {
+    //       def server = Artifactory.server 'My_Artifactory'
+    //       uploadArtifact(server)
+    //     }
+    //   }
+    // }
   }
 }
 def uploadArtifact(server) {
