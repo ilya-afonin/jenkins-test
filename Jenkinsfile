@@ -1,5 +1,5 @@
-#!/bin/groovy
 pipeline {
+  agent any
   tools {
     nodejs 'default-nodejs'
   }
@@ -7,14 +7,14 @@ pipeline {
     stage('Startup') {
       steps {
         script {
-          sh 'npm install'
+          shell 'npm install'
         }
       }
     }
     stage('Test') {
       steps {
         script {
-          sh 'npm run coverage:prod'
+          shell 'npm run coverage:prod'
         }
       }
       post {
@@ -33,23 +33,23 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          sh 'npm start'
-          sh 'npm pack'
+          shell 'npm start'
+          shell 'npm pack'
         }
       }
     }
-    // stage('Deploy') {
-    //   when {
-    //     expression {
-    //       currentBuild.result == null || currentBuild.result == 'SUCCESS'
-    //     }
-    //   }
-    //   steps {
-    //     script {
-    //       def server = Artifactory.server 'My_Artifactory'
-    //       uploadArtifact(server)
-    //     }
-    //   }
+    stage('Deploy') {
+      when {
+        expression {
+          currentBuild.result == null || currentBuild.result == 'SUCCESS'
+        }
+      }
+      steps {
+        script {
+          def server = Artifactory.server 'My_Artifactory'
+          uploadArtifact(server)
+        }
+      }
     }
   }
 }
