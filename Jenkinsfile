@@ -7,14 +7,14 @@ pipeline {
     stage('Startup') {
       steps {
         script {
-          sh | 'npm install'
+          sh 'npm install'
         }
       }
     }
     stage('Test') {
       steps {
         script {
-          sh | 'npm run coverage:prod'
+          sh 'npm run coverage:prod'
         }
       }
       post {
@@ -33,8 +33,8 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          sh | 'npm start'
-          sh | 'npm pack'
+          sh 'npm start'
+          sh 'npm pack'
         }
       }
     }
